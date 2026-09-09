@@ -9,7 +9,7 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "ua.starlink.reader"
+        applicationId = "com.dishcheck.app"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

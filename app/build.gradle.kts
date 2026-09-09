@@ -1,7 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+}
+
+// Ключ підпису лежить ПОЗА репозиторієм, шлях і паролі — у keystore.properties,
+// який у git не потрапляє (.gitignore). Якщо файлу немає — release збереться
+// без підпису замість того, щоб упасти: так проєкт лишається складальним
+// на машині, де ключа немає.
+val keystorePropsFile = rootProject.file("keystore.properties")
+val keystoreProps = Properties().apply {
+    if (keystorePropsFile.exists()) keystorePropsFile.inputStream().use { load(it) }
 }
 
 android {
@@ -34,8 +45,23 @@ android {
         buildConfigField("String", "CONSENT_TEST_DEVICE_ID", "\"\"")
     }
 
+    signingConfigs {
+        create("release") {
+            if (keystorePropsFile.exists()) {
+                storeFile = file(keystoreProps.getProperty("storeFile"))
+                storePassword = keystoreProps.getProperty("storePassword")
+                keyAlias = keystoreProps.getProperty("keyAlias")
+                keyPassword = keystoreProps.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            if (keystorePropsFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
+
             // R8 вимкнено навмисно: protobuf-java будує повідомлення через рефлексію
             // дескрипторів, і скорочення коду ламає динамічний розбір відповіді Starlink.
             isMinifyEnabled = false

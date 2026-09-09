@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Типова мова застосунку — англійська. Переклади лежать у values-uk, values-pl,
+    values-es, values-de. Назва «Є Starlink» не перекладається: це власна назва.
+-->
+<resources>
+    <string name="app_name" translatable="false">Є Starlink</string>
+
+    <!-- Пункти меню «що зчитувати» -->
+    <string name="menu_kit">KIT number from the box</string>
+    <string name="menu_dish_serial">Dish serial no.</string>
+    <string name="menu_modem_serial">Modem serial no.</string>
+    <string name="menu_starlink_id" translatable="false">Starlink ID</string>
+    <string name="menu_router_id" translatable="false">Router ID</string>
+    <string name="menu_mac">Modem MAC address</string>
+    <string name="hint_qr">QR / barcode</string>
+    <string name="hint_from_dish">over the network from the dish</string>
+    <string name="hint_from_router">over the network from the router</string>
+
+    <!-- Головний екран -->
+    <string name="capture_menu_title">What to capture</string>
+    <string name="capture_menu_selected">%1$d of 6 selected</string>
+    <string name="action_collapse">collapse ▲</string>
+    <string name="action_expand">expand ▼</string>
+    <string name="btn_start_capture">Start capture</string>
+    <string name="state_polling">Polling devices…</string>
+    <string name="warn_select_one">Select at least one item in the menu above.</string>
+    <string name="error_label">Failed</string>
+    <string name="action_understood">Got it</string>
+
+    <!-- Стан підключення -->
+    <string name="link_no_wifi_pill">No Wi-Fi</string>
+    <string name="link_no_wifi_title">Connect to Starlink Wi-Fi</string>
+    <string name="link_no_wifi_hint">Open Wi-Fi settings and join the Starlink router network.</string>
+    <string name="link_silent_pill">Not responding</string>
+    <string name="link_silent_title">Wi-Fi is up, Starlink is silent</string>
+    <string name="link_silent_hint">Make sure this is the Starlink network and the dish is powered. QR scanning works without a network.</string>
+    <string name="link_ready_pill">Online</string>
+    <string name="link_ready_title">Starlink is online</string>
+    <string name="link_ready_hint">Devices respond — ready to read.</string>
+    <string name="action_wifi_settings">Wi-Fi settings</string>
+    <string name="action_check">Check</string>
+
+    <!-- Розділ «Додатково» -->
+    <string name="advanced_collapse">Advanced ▲</string>
+    <string name="advanced_expand">Advanced ▼</string>
+    <string name="fallback_title">Fallback reading mode</string>
+    <string name="fallback_hint">Turn this on only if normal reading fails: the request is sent without the device schema.</string>
+    <string name="log_title">Last read log</string>
+    <string name="action_send_log">Send log</string>
+    <string name="privacy_options">Privacy settings</string>
+
+    <!-- Картка комплекту -->
+    <string name="section_kit">Kit</string>
+    <string name="section_network">From the network</string>
+    <string name="action_retry_network">Poll the devices again</string>
+    <string name="notes_label">My notes</string>
+    <string name="notes_placeholder">Address, client, equipment condition…</string>
+    <string name="action_share">Share</string>
+    <string name="value_not_read">not read</string>
+    <string name="value_empty" translatable="false">—</string>
+
+    <!-- Видалення -->
+    <string name="delete_one_title">Delete this record?</string>
+    <string name="delete_one_text">The record and its notes will be deleted from the phone.</string>
+    <string name="delete_many_title">Delete %1$s?</string>
+    <string name="delete_many_text">The records and their notes will disappear from the phone. They cannot be recovered.</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
+
+    <!-- Історія -->
+    <string name="history_title">History</string>
+    <string name="history_selected">%1$d selected</string>
+    <string name="action_select">Select</string>
+    <string name="action_select_all">Select all</string>
+    <string name="action_deselect_all">Deselect all</string>
+    <string name="action_share_count">Share (%1$d)</string>
+    <string name="history_empty_title">Nothing here yet</string>
+    <string name="history_empty_hint">Capture your first kit on the home screen.</string>
+    <string name="day_select">select day</string>
+    <string name="day_deselect">deselect day</string>
+    <string name="day_today">Today</string>
+    <string name="day_yesterday">Yesterday</string>
+
+    <!-- Повторне зчитування того самого комплекту -->
+    <string name="duplicate_title">This Starlink was read before</string>
+    <string name="duplicate_existing">A record from %1$s is already in the history.</string>
+    <string name="duplicate_hint">Update — the fresh data moves into that record and the notes are kept. Either way the kit shows up under today.</string>
+    <string name="action_update_existing">Update existing</string>
+    <string name="action_create_new">Create new</string>
+    <string name="record_untitled">No identifier</string>
+
+    <!-- Кроки сканування -->
+    <string name="step_kit">KIT number from the box</string>
+    <string name="step_dish_serial">Dish serial number</string>
+    <string name="step_modem_serial">Modem serial number</string>
+    <string name="step_progress">Step %1$d of %2$d</string>
+
+    <!-- Сканер -->
+    <string name="camera_permission_needed">Camera permission is required</string>
+    <string name="scanner_unavailable">Scanner unavailable: %1$s</string>
+    <string name="camera_unavailable">Camera unavailable: %1$s</string>
+    <string name="scan_title_default">Scanning a code</string>
+    <string name="scan_hint">Drag the frame with your finger. Tap to focus.</string>
+    <string name="scan_zone">Zone</string>
+    <string name="scan_zoom">Zoom</string>
+    <string name="torch">Torch</string>
+    <string name="torch_on">Torch: on</string>
+    <string name="action_skip">Skip</string>
+    <string name="scan_found">Code found</string>
+    <string name="scan_verify">Check it against what is printed on the label.</string>
+    <string name="scan_type">Type: %1$s</string>
+    <string name="action_again">Again</string>
+    <string name="action_confirm">Confirm</string>
+    <string name="code_generic">code</string>
+
+    <!-- Помилки зчитування -->
+    <string name="error_nothing_captured">Nothing could be captured. Check that the phone is connected to the Starlink Wi-Fi, or enter the data by hand.</string>
+    <string name="error_network_silent">The devices did not answer over the network — what was scanned is saved, and the network fields can be filled in by hand.</string>
+
+    <!-- Текст для месенджера -->
+    <string name="share_header_one">Starlink — kit data</string>
+    <string name="share_header_many">Starlink — %1$s</string>
+    <string name="share_date">Date: %1$s</string>
+    <string name="share_generated">Generated: %1$s</string>
+    <string name="share_kit" translatable="false">KIT</string>
+    <string name="share_note">Note:</string>
+    <string name="share_chooser">Share via</string>
+
+    <plurals name="records">
+        <item quantity="one">%d record</item>
+        <item quantity="other">%d records</item>
+    </plurals>
+
+    <plurals name="kits">
+        <item quantity="one">%d kit</item>
+        <item quantity="other">%d kits</item>
+    </plurals>
+</resources>

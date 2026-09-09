@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_kit">Номер KIT з коробки</string>
+    <string name="menu_dish_serial">Серійний № тарілки</string>
+    <string name="menu_modem_serial">Серійний № модема</string>
+    <string name="menu_mac">MAC-адреса модема</string>
+    <string name="hint_qr">QR / штрихкод</string>
+    <string name="hint_from_dish">по мережі з тарілки</string>
+    <string name="hint_from_router">по мережі з роутера</string>
+
+    <string name="capture_menu_title">Що зчитувати</string>
+    <string name="capture_menu_selected">Обрано %1$d з 6</string>
+    <string name="action_collapse">згорнути ▲</string>
+    <string name="action_expand">розгорнути ▼</string>
+    <string name="btn_start_capture">Почати зчитування</string>
+    <string name="state_polling">Опитування пристроїв…</string>
+    <string name="warn_select_one">Оберіть хоча б один пункт у меню вище.</string>
+    <string name="error_label">Не вдалося</string>
+    <string name="action_understood">Зрозуміло</string>
+
+    <string name="link_no_wifi_pill">Немає Wi-Fi</string>
+    <string name="link_no_wifi_title">Підключіться до Wi-Fi Starlink</string>
+    <string name="link_no_wifi_hint">Відкрийте налаштування Wi-Fi і приєднайтесь до мережі роутера Starlink.</string>
+    <string name="link_silent_pill">Не відповідає</string>
+    <string name="link_silent_title">Wi-Fi є, Starlink мовчить</string>
+    <string name="link_silent_hint">Переконайтесь, що це мережа Starlink і тарілка увімкнена. Сканування QR працює й без мережі.</string>
+    <string name="link_ready_pill">На звʼязку</string>
+    <string name="link_ready_title">Starlink на звʼязку</string>
+    <string name="link_ready_hint">Пристрої відповідають — можна зчитувати.</string>
+    <string name="action_wifi_settings">Налаштування Wi-Fi</string>
+    <string name="action_check">Перевірити</string>
+
+    <string name="advanced_collapse">Додатково ▲</string>
+    <string name="advanced_expand">Додатково ▼</string>
+    <string name="fallback_title">Резервний режим зчитування</string>
+    <string name="fallback_hint">Вмикайте, лише якщо звичайне зчитування не працює: запит надсилається без схеми пристрою.</string>
+    <string name="log_title">Журнал останнього зчитування</string>
+    <string name="action_send_log">Надіслати журнал</string>
+    <string name="privacy_options">Налаштування конфіденційності</string>
+
+    <string name="section_kit">Комплект</string>
+    <string name="section_network">З мережі</string>
+    <string name="action_retry_network">Опитати пристрої ще раз</string>
+    <string name="notes_label">Мої примітки</string>
+    <string name="notes_placeholder">Адреса, клієнт, стан обладнання…</string>
+    <string name="action_share">Поділитися</string>
+    <string name="value_not_read">не зчитано</string>
+
+    <string name="delete_one_title">Видалити запис?</string>
+    <string name="delete_one_text">Запис і примітки до нього буде видалено з памʼяті телефона.</string>
+    <string name="delete_many_title">Видалити %1$s?</string>
+    <string name="delete_many_text">Записи разом із примітками зникнуть з памʼяті телефона. Відновити їх не вийде.</string>
+    <string name="action_delete">Видалити</string>
+    <string name="action_cancel">Скасувати</string>
+
+    <string name="history_title">Історія</string>
+    <string name="history_selected">Обрано %1$d</string>
+    <string name="action_select">Вибрати</string>
+    <string name="action_select_all">Обрати всі</string>
+    <string name="action_deselect_all">Зняти всі</string>
+    <string name="action_share_count">Поділитися (%1$d)</string>
+    <string name="history_empty_title">Поки що порожньо</string>
+    <string name="history_empty_hint">Зчитайте перший комплект на головному екрані.</string>
+    <string name="day_select">весь день</string>
+    <string name="day_deselect">зняти день</string>
+    <string name="day_today">Сьогодні</string>
+    <string name="day_yesterday">Вчора</string>
+
+    <string name="duplicate_title">Цей Starlink уже зчитували</string>
+    <string name="duplicate_existing">Запис від %1$s уже є в історії.</string>
+    <string name="duplicate_hint">Оновити — свіжі дані переїдуть у той запис, примітки збережуться. В обох випадках комплект зʼявиться в сьогоднішньому дні.</string>
+    <string name="action_update_existing">Оновити наявний</string>
+    <string name="action_create_new">Створити новий</string>
+    <string name="record_untitled">Без ідентифікатора</string>
+
+    <string name="step_kit">Номер KIT з коробки</string>
+    <string name="step_dish_serial">Серійний номер тарілки</string>
+    <string name="step_modem_serial">Серійний номер модема</string>
+    <string name="step_progress">Крок %1$d з %2$d</string>
+
+    <string name="camera_permission_needed">Потрібен дозвіл на камеру</string>
+    <string name="scanner_unavailable">Сканер недоступний: %1$s</string>
+    <string name="camera_unavailable">Камера недоступна: %1$s</string>
+    <string name="scan_title_default">Сканування коду</string>
+    <string name="scan_hint">Рамку можна тягнути пальцем. Тап — фокус.</string>
+    <string name="scan_zone">Зона</string>
+    <string name="scan_zoom">Зум</string>
+    <string name="torch">Ліхтар</string>
+    <string name="torch_on">Ліхтар: увімк.</string>
+    <string name="action_skip">Пропустити</string>
+    <string name="scan_found">Знайдено код</string>
+    <string name="scan_verify">Звірте з тим, що надруковано на етикетці.</string>
+    <string name="scan_type">Тип: %1$s</string>
+    <string name="action_again">Ще раз</string>
+    <string name="action_confirm">Підтвердити</string>
+    <string name="code_generic">код</string>
+
+    <string name="error_nothing_captured">Не вдалося зняти жодного значення. Перевірте, що телефон підключений до Wi-Fi Starlink, або введіть дані вручну.</string>
+    <string name="error_network_silent">Пристрої не відповіли по мережі — відскановане збережено, мережеві поля можна дозаповнити вручну.</string>
+
+    <string name="share_header_one">Starlink — дані комплекту</string>
+    <string name="share_header_many">Starlink — %1$s</string>
+    <string name="share_date">Дата: %1$s</string>
+    <string name="share_generated">Сформовано: %1$s</string>
+    <string name="share_note">Примітка:</string>
+    <string name="share_chooser">Поділитися через</string>
+
+    <plurals name="records">
+        <item quantity="one">%d запис</item>
+        <item quantity="few">%d записи</item>
+        <item quantity="many">%d записів</item>
+        <item quantity="other">%d записів</item>
+    </plurals>
+
+    <plurals name="kits">
+        <item quantity="one">%d комплект</item>
+        <item quantity="few">%d комплекти</item>
+        <item quantity="many">%d комплектів</item>
+        <item quantity="other">%d комплектів</item>
+    </plurals>
+</resources>

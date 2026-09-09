@@ -1,0 +1,4 @@
+-keep class com.google.protobuf.** { *; }
+-dontwarn com.google.protobuf.**
+-dontwarn okhttp3.**
+-dontwarn org.conscrypt.**

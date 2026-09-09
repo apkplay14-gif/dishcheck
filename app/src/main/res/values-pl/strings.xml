@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_kit">Numer KIT z pudełka</string>
+    <string name="menu_dish_serial">Nr seryjny anteny</string>
+    <string name="menu_modem_serial">Nr seryjny modemu</string>
+    <string name="menu_mac">Adres MAC modemu</string>
+    <string name="hint_qr">QR / kod kreskowy</string>
+    <string name="hint_from_dish">przez sieć z anteny</string>
+    <string name="hint_from_router">przez sieć z routera</string>
+
+    <string name="capture_menu_title">Co odczytywać</string>
+    <string name="capture_menu_selected">Wybrano %1$d z 6</string>
+    <string name="action_collapse">zwiń ▲</string>
+    <string name="action_expand">rozwiń ▼</string>
+    <string name="btn_start_capture">Rozpocznij odczyt</string>
+    <string name="state_polling">Odpytywanie urządzeń…</string>
+    <string name="warn_select_one">Wybierz co najmniej jedną pozycję z menu powyżej.</string>
+    <string name="error_label">Nie udało się</string>
+    <string name="action_understood">Rozumiem</string>
+
+    <string name="link_no_wifi_pill">Brak Wi-Fi</string>
+    <string name="link_no_wifi_title">Połącz się z Wi-Fi Starlink</string>
+    <string name="link_no_wifi_hint">Otwórz ustawienia Wi-Fi i dołącz do sieci routera Starlink.</string>
+    <string name="link_silent_pill">Nie odpowiada</string>
+    <string name="link_silent_title">Wi-Fi działa, Starlink milczy</string>
+    <string name="link_silent_hint">Upewnij się, że to sieć Starlink, a antena jest zasilana. Skanowanie QR działa też bez sieci.</string>
+    <string name="link_ready_pill">Połączono</string>
+    <string name="link_ready_title">Starlink jest online</string>
+    <string name="link_ready_hint">Urządzenia odpowiadają — można odczytywać.</string>
+    <string name="action_wifi_settings">Ustawienia Wi-Fi</string>
+    <string name="action_check">Sprawdź</string>
+
+    <string name="advanced_collapse">Zaawansowane ▲</string>
+    <string name="advanced_expand">Zaawansowane ▼</string>
+    <string name="fallback_title">Awaryjny tryb odczytu</string>
+    <string name="fallback_hint">Włącz tylko wtedy, gdy zwykły odczyt nie działa: zapytanie jest wysyłane bez schematu urządzenia.</string>
+    <string name="log_title">Dziennik ostatniego odczytu</string>
+    <string name="action_send_log">Wyślij dziennik</string>
+    <string name="privacy_options">Ustawienia prywatności</string>
+
+    <string name="section_kit">Zestaw</string>
+    <string name="section_network">Z sieci</string>
+    <string name="action_retry_network">Odpytaj urządzenia ponownie</string>
+    <string name="notes_label">Moje notatki</string>
+    <string name="notes_placeholder">Adres, klient, stan sprzętu…</string>
+    <string name="action_share">Udostępnij</string>
+    <string name="value_not_read">nie odczytano</string>
+
+    <string name="delete_one_title">Usunąć wpis?</string>
+    <string name="delete_one_text">Wpis wraz z notatkami zostanie usunięty z pamięci telefonu.</string>
+    <string name="delete_many_title">Usunąć %1$s?</string>
+    <string name="delete_many_text">Wpisy wraz z notatkami znikną z pamięci telefonu. Nie da się ich odzyskać.</string>
+    <string name="action_delete">Usuń</string>
+    <string name="action_cancel">Anuluj</string>
+
+    <string name="history_title">Historia</string>
+    <string name="history_selected">Wybrano %1$d</string>
+    <string name="action_select">Wybierz</string>
+    <string name="action_select_all">Zaznacz wszystko</string>
+    <string name="action_deselect_all">Odznacz wszystko</string>
+    <string name="action_share_count">Udostępnij (%1$d)</string>
+    <string name="history_empty_title">Na razie pusto</string>
+    <string name="history_empty_hint">Odczytaj pierwszy zestaw na ekranie głównym.</string>
+    <string name="day_select">cały dzień</string>
+    <string name="day_deselect">odznacz dzień</string>
+    <string name="day_today">Dzisiaj</string>
+    <string name="day_yesterday">Wczoraj</string>
+
+    <string name="duplicate_title">Ten Starlink był już odczytywany</string>
+    <string name="duplicate_existing">Wpis z %1$s jest już w historii.</string>
+    <string name="duplicate_hint">Aktualizacja — świeże dane trafią do tego wpisu, a notatki zostaną zachowane. W obu przypadkach zestaw pojawi się w dniu dzisiejszym.</string>
+    <string name="action_update_existing">Zaktualizuj istniejący</string>
+    <string name="action_create_new">Utwórz nowy</string>
+    <string name="record_untitled">Bez identyfikatora</string>
+
+    <string name="step_kit">Numer KIT z pudełka</string>
+    <string name="step_dish_serial">Numer seryjny anteny</string>
+    <string name="step_modem_serial">Numer seryjny modemu</string>
+    <string name="step_progress">Krok %1$d z %2$d</string>
+
+    <string name="camera_permission_needed">Wymagane uprawnienie do aparatu</string>
+    <string name="scanner_unavailable">Skaner niedostępny: %1$s</string>
+    <string name="camera_unavailable">Aparat niedostępny: %1$s</string>
+    <string name="scan_title_default">Skanowanie kodu</string>
+    <string name="scan_hint">Ramkę można przeciągać palcem. Dotknij, aby ustawić ostrość.</string>
+    <string name="scan_zone">Obszar</string>
+    <string name="scan_zoom">Zoom</string>
+    <string name="torch">Latarka</string>
+    <string name="torch_on">Latarka: wł.</string>
+    <string name="action_skip">Pomiń</string>
+    <string name="scan_found">Znaleziono kod</string>
+    <string name="scan_verify">Porównaj z tym, co wydrukowano na etykiecie.</string>
+    <string name="scan_type">Typ: %1$s</string>
+    <string name="action_again">Jeszcze raz</string>
+    <string name="action_confirm">Potwierdź</string>
+    <string name="code_generic">kod</string>
+
+    <string name="error_nothing_captured">Nie udało się odczytać żadnej wartości. Sprawdź, czy telefon jest połączony z Wi-Fi Starlink, albo wpisz dane ręcznie.</string>
+    <string name="error_network_silent">Urządzenia nie odpowiedziały przez sieć — zeskanowane dane zapisano, pola sieciowe można uzupełnić ręcznie.</string>
+
+    <string name="share_header_one">Starlink — dane zestawu</string>
+    <string name="share_header_many">Starlink — %1$s</string>
+    <string name="share_date">Data: %1$s</string>
+    <string name="share_generated">Wygenerowano: %1$s</string>
+    <string name="share_note">Notatka:</string>
+    <string name="share_chooser">Udostępnij przez</string>
+
+    <plurals name="records">
+        <item quantity="one">%d wpis</item>
+        <item quantity="few">%d wpisy</item>
+        <item quantity="many">%d wpisów</item>
+        <item quantity="other">%d wpisu</item>
+    </plurals>
+
+    <plurals name="kits">
+        <item quantity="one">%d zestaw</item>
+        <item quantity="few">%d zestawy</item>
+        <item quantity="many">%d zestawów</item>
+        <item quantity="other">%d zestawu</item>
+    </plurals>
+</resources>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_kit">KIT-Nummer vom Karton</string>
+    <string name="menu_dish_serial">Seriennr. der Antenne</string>
+    <string name="menu_modem_serial">Seriennr. des Modems</string>
+    <string name="menu_mac">MAC-Adresse des Modems</string>
+    <string name="hint_qr">QR / Barcode</string>
+    <string name="hint_from_dish">über das Netzwerk von der Antenne</string>
+    <string name="hint_from_router">über das Netzwerk vom Router</string>
+
+    <string name="capture_menu_title">Was erfasst wird</string>
+    <string name="capture_menu_selected">%1$d von 6 ausgewählt</string>
+    <string name="action_collapse">einklappen ▲</string>
+    <string name="action_expand">ausklappen ▼</string>
+    <string name="btn_start_capture">Erfassung starten</string>
+    <string name="state_polling">Geräte werden abgefragt…</string>
+    <string name="warn_select_one">Wähle mindestens einen Punkt im Menü oben aus.</string>
+    <string name="error_label">Fehlgeschlagen</string>
+    <string name="action_understood">Verstanden</string>
+
+    <string name="link_no_wifi_pill">Kein WLAN</string>
+    <string name="link_no_wifi_title">Mit dem Starlink-WLAN verbinden</string>
+    <string name="link_no_wifi_hint">Öffne die WLAN-Einstellungen und verbinde dich mit dem Netz des Starlink-Routers.</string>
+    <string name="link_silent_pill">Antwortet nicht</string>
+    <string name="link_silent_title">WLAN steht, Starlink schweigt</string>
+    <string name="link_silent_hint">Prüfe, ob es das Starlink-Netz ist und die Antenne Strom hat. Das QR-Scannen funktioniert auch ohne Netz.</string>
+    <string name="link_ready_pill">Online</string>
+    <string name="link_ready_title">Starlink ist online</string>
+    <string name="link_ready_hint">Die Geräte antworten — Auslesen ist möglich.</string>
+    <string name="action_wifi_settings">WLAN-Einstellungen</string>
+    <string name="action_check">Prüfen</string>
+
+    <string name="advanced_collapse">Erweitert ▲</string>
+    <string name="advanced_expand">Erweitert ▼</string>
+    <string name="fallback_title">Ersatz-Lesemodus</string>
+    <string name="fallback_hint">Nur einschalten, wenn das normale Auslesen nicht klappt: Die Anfrage geht ohne Geräteschema raus.</string>
+    <string name="log_title">Protokoll des letzten Auslesens</string>
+    <string name="action_send_log">Protokoll senden</string>
+    <string name="privacy_options">Datenschutz-Einstellungen</string>
+
+    <string name="section_kit">Kit</string>
+    <string name="section_network">Aus dem Netzwerk</string>
+    <string name="action_retry_network">Geräte erneut abfragen</string>
+    <string name="notes_label">Meine Notizen</string>
+    <string name="notes_placeholder">Adresse, Kunde, Zustand der Technik…</string>
+    <string name="action_share">Teilen</string>
+    <string name="value_not_read">nicht gelesen</string>
+
+    <string name="delete_one_title">Eintrag löschen?</string>
+    <string name="delete_one_text">Der Eintrag und seine Notizen werden aus dem Speicher des Telefons gelöscht.</string>
+    <string name="delete_many_title">%1$s löschen?</string>
+    <string name="delete_many_text">Die Einträge und ihre Notizen verschwinden aus dem Speicher des Telefons. Sie lassen sich nicht wiederherstellen.</string>
+    <string name="action_delete">Löschen</string>
+    <string name="action_cancel">Abbrechen</string>
+
+    <string name="history_title">Verlauf</string>
+    <string name="history_selected">%1$d ausgewählt</string>
+    <string name="action_select">Auswählen</string>
+    <string name="action_select_all">Alle auswählen</string>
+    <string name="action_deselect_all">Auswahl aufheben</string>
+    <string name="action_share_count">Teilen (%1$d)</string>
+    <string name="history_empty_title">Noch nichts da</string>
+    <string name="history_empty_hint">Erfasse dein erstes Kit auf dem Startbildschirm.</string>
+    <string name="day_select">ganzer Tag</string>
+    <string name="day_deselect">Tag abwählen</string>
+    <string name="day_today">Heute</string>
+    <string name="day_yesterday">Gestern</string>
+
+    <string name="duplicate_title">Dieses Starlink wurde schon erfasst</string>
+    <string name="duplicate_existing">Ein Eintrag vom %1$s liegt bereits im Verlauf.</string>
+    <string name="duplicate_hint">Aktualisieren — die frischen Daten wandern in diesen Eintrag, die Notizen bleiben erhalten. In beiden Fällen erscheint das Kit unter dem heutigen Tag.</string>
+    <string name="action_update_existing">Vorhandenen aktualisieren</string>
+    <string name="action_create_new">Neuen anlegen</string>
+    <string name="record_untitled">Ohne Kennung</string>
+
+    <string name="step_kit">KIT-Nummer vom Karton</string>
+    <string name="step_dish_serial">Seriennummer der Antenne</string>
+    <string name="step_modem_serial">Seriennummer des Modems</string>
+    <string name="step_progress">Schritt %1$d von %2$d</string>
+
+    <string name="camera_permission_needed">Kamera-Berechtigung erforderlich</string>
+    <string name="scanner_unavailable">Scanner nicht verfügbar: %1$s</string>
+    <string name="camera_unavailable">Kamera nicht verfügbar: %1$s</string>
+    <string name="scan_title_default">Code wird gescannt</string>
+    <string name="scan_hint">Den Rahmen mit dem Finger ziehen. Tippen für den Fokus.</string>
+    <string name="scan_zone">Bereich</string>
+    <string name="scan_zoom">Zoom</string>
+    <string name="torch">Licht</string>
+    <string name="torch_on">Licht: an</string>
+    <string name="action_skip">Überspringen</string>
+    <string name="scan_found">Code gefunden</string>
+    <string name="scan_verify">Gleiche ihn mit dem Aufdruck auf dem Etikett ab.</string>
+    <string name="scan_type">Typ: %1$s</string>
+    <string name="action_again">Nochmal</string>
+    <string name="action_confirm">Bestätigen</string>
+    <string name="code_generic">Code</string>
+
+    <string name="error_nothing_captured">Es konnte kein einziger Wert erfasst werden. Prüfe, ob das Telefon mit dem Starlink-WLAN verbunden ist, oder gib die Daten von Hand ein.</string>
+    <string name="error_network_silent">Die Geräte haben über das Netzwerk nicht geantwortet — das Gescannte ist gespeichert, die Netzwerkfelder lassen sich von Hand ergänzen.</string>
+
+    <string name="share_header_one">Starlink — Kit-Daten</string>
+    <string name="share_header_many">Starlink — %1$s</string>
+    <string name="share_date">Datum: %1$s</string>
+    <string name="share_generated">Erstellt: %1$s</string>
+    <string name="share_note">Notiz:</string>
+    <string name="share_chooser">Teilen über</string>
+
+    <plurals name="records">
+        <item quantity="one">%d Eintrag</item>
+        <item quantity="other">%d Einträge</item>
+    </plurals>
+
+    <plurals name="kits">
+        <item quantity="one">%d Kit</item>
+        <item quantity="other">%d Kits</item>
+    </plurals>
+</resources>

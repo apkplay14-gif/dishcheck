@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 13+ бере цей список для вибору мови застосунку в системних налаштуваннях. -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="uk" />
+    <locale android:name="pl" />
+    <locale android:name="es" />
+    <locale android:name="de" />
+</locale-config>

@@ -38,9 +38,12 @@ final class GrpcChannel {
             .connectTimeout(.seconds(3))
 
         let channel = try await bootstrap.connect(host: host, port: port).get()
-        let mux = try await channel.pipeline.configureHTTP2Pipeline(
+        // Пристрій ніколи не ініціює власні потоки до нас — це чистий
+        // клієнт, тож callback тут лише заглушка (bare nil тут неоднозначний
+        // для компілятора через кілька перевантажень configureHTTP2Pipeline).
+        let mux: HTTP2StreamMultiplexer = try await channel.pipeline.configureHTTP2Pipeline(
             mode: .client,
-            inboundStreamInitializer: nil
+            inboundStreamInitializer: { streamChannel in streamChannel.eventLoop.makeSucceededVoidFuture() }
         ).get()
 
         self.connection = channel

@@ -39,7 +39,7 @@ struct AppRootView: View {
                 }
             )
         }
-        .onChange(of: scenePhase) { _, phase in
+        .onChange(of: scenePhase) { phase in
             if phase == .active {
                 Task { await state.refreshLink() }
             } else if phase == .background {

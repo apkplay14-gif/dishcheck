@@ -13,3 +13,10 @@ captures/
 keystore.properties
 *.aab
 *.heic
+
+# iOS: генерується XcodeGen/CI щоразу заново, у репозиторії не потрібен.
+ios/*.xcodeproj/
+ios/Payload/
+ios/*.ipa
+ios/StarlinkReader/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
+

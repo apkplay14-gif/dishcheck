@@ -1,0 +1,107 @@
+"menu_kit" = "KIT-Nummer vom Karton";
+"menu_dish_serial" = "Seriennr. der Antenne";
+"menu_modem_serial" = "Seriennr. des Modems";
+"menu_starlink_id" = "Starlink ID";
+"menu_router_id" = "Router ID";
+"menu_mac" = "MAC-Adresse des Modems";
+"hint_qr" = "QR / Barcode";
+"hint_from_dish" = "über das Netzwerk von der Antenne";
+"hint_from_router" = "über das Netzwerk vom Router";
+
+"capture_menu_title" = "Was erfasst wird";
+"capture_menu_selected" = "%d von 6 ausgewählt";
+"action_collapse" = "einklappen ▲";
+"action_expand" = "ausklappen ▼";
+"btn_start_capture" = "Erfassung starten";
+"state_polling" = "Geräte werden abgefragt…";
+"warn_select_one" = "Wähle mindestens einen Punkt im Menü oben aus.";
+"error_label" = "Fehlgeschlagen";
+"action_understood" = "Verstanden";
+
+"link_no_wifi_pill" = "Kein WLAN";
+"link_no_wifi_title" = "Mit dem Starlink-WLAN verbinden";
+"link_no_wifi_hint" = "Öffne die WLAN-Einstellungen und verbinde dich mit dem Netz des Starlink-Routers.";
+"link_silent_pill" = "Antwortet nicht";
+"link_silent_title" = "WLAN steht, Starlink schweigt";
+"link_silent_hint" = "Prüfe, ob es das Starlink-Netz ist und die Antenne Strom hat. Das QR-Scannen funktioniert auch ohne Netz.";
+"link_ready_pill" = "Online";
+"link_ready_title" = "Starlink ist online";
+"link_ready_hint" = "Die Geräte antworten — Auslesen ist möglich.";
+"action_wifi_settings" = "WLAN-Einstellungen";
+"action_check" = "Prüfen";
+
+"advanced_collapse" = "Erweitert ▲";
+"advanced_expand" = "Erweitert ▼";
+"fallback_title" = "Ersatz-Lesemodus";
+"fallback_hint" = "Nur einschalten, wenn das normale Auslesen nicht klappt: Die Anfrage geht ohne Geräteschema raus.";
+"log_title" = "Protokoll des letzten Auslesens";
+"action_send_log" = "Protokoll senden";
+"privacy_options" = "Datenschutz-Einstellungen";
+
+"section_kit" = "Kit";
+"section_network" = "Aus dem Netzwerk";
+"action_retry_network" = "Geräte erneut abfragen";
+"notes_label" = "Meine Notizen";
+"notes_placeholder" = "Adresse, Kunde, Zustand der Technik…";
+"action_share" = "Teilen";
+"value_not_read" = "nicht gelesen";
+
+"delete_one_title" = "Eintrag löschen?";
+"delete_one_text" = "Der Eintrag und seine Notizen werden aus dem Speicher des Telefons gelöscht.";
+"delete_many_title" = "%@ löschen?";
+"delete_many_text" = "Die Einträge und ihre Notizen verschwinden aus dem Speicher des Telefons. Sie lassen sich nicht wiederherstellen.";
+"action_delete" = "Löschen";
+"action_cancel" = "Abbrechen";
+
+"history_title" = "Verlauf";
+"history_selected" = "%d ausgewählt";
+"action_select" = "Auswählen";
+"action_select_all" = "Alle auswählen";
+"action_deselect_all" = "Auswahl aufheben";
+"action_share_count" = "Teilen (%d)";
+"history_empty_title" = "Noch nichts da";
+"history_empty_hint" = "Erfasse dein erstes Kit auf dem Startbildschirm.";
+"day_select" = "ganzer Tag";
+"day_deselect" = "Tag abwählen";
+"day_today" = "Heute";
+"day_yesterday" = "Gestern";
+
+"duplicate_title" = "Dieses Starlink wurde schon erfasst";
+"duplicate_existing" = "Ein Eintrag vom %@ liegt bereits im Verlauf.";
+"duplicate_hint" = "Aktualisieren — die frischen Daten wandern in diesen Eintrag, die Notizen bleiben erhalten. In beiden Fällen erscheint das Kit unter dem heutigen Tag.";
+"action_update_existing" = "Vorhandenen aktualisieren";
+"action_create_new" = "Neuen anlegen";
+"record_untitled" = "Ohne Kennung";
+
+"step_kit" = "KIT-Nummer vom Karton";
+"step_dish_serial" = "Seriennummer der Antenne";
+"step_modem_serial" = "Seriennummer des Modems";
+"step_progress" = "Schritt %d von %d";
+
+"camera_permission_needed" = "Kamera-Berechtigung erforderlich";
+"scanner_unavailable" = "Scanner nicht verfügbar: %@";
+"camera_unavailable" = "Kamera nicht verfügbar: %@";
+"scan_title_default" = "Code wird gescannt";
+"scan_hint" = "Den Rahmen mit dem Finger ziehen. Tippen für den Fokus.";
+"scan_zone" = "Bereich";
+"scan_zoom" = "Zoom";
+"torch" = "Licht";
+"torch_on" = "Licht: an";
+"action_skip" = "Überspringen";
+"scan_found" = "Code gefunden";
+"scan_verify" = "Gleiche ihn mit dem Aufdruck auf dem Etikett ab.";
+"scan_type" = "Typ: %@";
+"action_again" = "Nochmal";
+"action_confirm" = "Bestätigen";
+"code_generic" = "Code";
+
+"error_nothing_captured" = "Es konnte kein einziger Wert erfasst werden. Prüfe, ob das Telefon mit dem Starlink-WLAN verbunden ist, oder gib die Daten von Hand ein.";
+"error_network_silent" = "Die Geräte haben über das Netzwerk nicht geantwortet — das Gescannte ist gespeichert, die Netzwerkfelder lassen sich von Hand ergänzen.";
+
+"share_header_one" = "Starlink — Kit-Daten";
+"share_header_many" = "Starlink — %@";
+"share_date" = "Datum: %@";
+"share_generated" = "Erstellt: %@";
+"share_kit" = "KIT";
+"share_note" = "Notiz:";
+"share_chooser" = "Teilen über";

@@ -1,0 +1,107 @@
+"menu_kit" = "Номер KIT з коробки";
+"menu_dish_serial" = "Серійний № тарілки";
+"menu_modem_serial" = "Серійний № модема";
+"menu_starlink_id" = "Starlink ID";
+"menu_router_id" = "Router ID";
+"menu_mac" = "MAC-адреса модема";
+"hint_qr" = "QR / штрихкод";
+"hint_from_dish" = "по мережі з тарілки";
+"hint_from_router" = "по мережі з роутера";
+
+"capture_menu_title" = "Що зчитувати";
+"capture_menu_selected" = "Обрано %d з 6";
+"action_collapse" = "згорнути ▲";
+"action_expand" = "розгорнути ▼";
+"btn_start_capture" = "Почати зчитування";
+"state_polling" = "Опитування пристроїв…";
+"warn_select_one" = "Оберіть хоча б один пункт у меню вище.";
+"error_label" = "Не вдалося";
+"action_understood" = "Зрозуміло";
+
+"link_no_wifi_pill" = "Немає Wi-Fi";
+"link_no_wifi_title" = "Підключіться до Wi-Fi Starlink";
+"link_no_wifi_hint" = "Відкрийте налаштування Wi-Fi і приєднайтесь до мережі роутера Starlink.";
+"link_silent_pill" = "Не відповідає";
+"link_silent_title" = "Wi-Fi є, Starlink мовчить";
+"link_silent_hint" = "Переконайтесь, що це мережа Starlink і тарілка увімкнена. Сканування QR працює й без мережі.";
+"link_ready_pill" = "На звʼязку";
+"link_ready_title" = "Starlink на звʼязку";
+"link_ready_hint" = "Пристрої відповідають — можна зчитувати.";
+"action_wifi_settings" = "Налаштування Wi-Fi";
+"action_check" = "Перевірити";
+
+"advanced_collapse" = "Додатково ▲";
+"advanced_expand" = "Додатково ▼";
+"fallback_title" = "Резервний режим зчитування";
+"fallback_hint" = "Вмикайте, лише якщо звичайне зчитування не працює: запит надсилається без схеми пристрою.";
+"log_title" = "Журнал останнього зчитування";
+"action_send_log" = "Надіслати журнал";
+"privacy_options" = "Налаштування конфіденційності";
+
+"section_kit" = "Комплект";
+"section_network" = "З мережі";
+"action_retry_network" = "Опитати пристрої ще раз";
+"notes_label" = "Мої примітки";
+"notes_placeholder" = "Адреса, клієнт, стан обладнання…";
+"action_share" = "Поділитися";
+"value_not_read" = "не зчитано";
+
+"delete_one_title" = "Видалити запис?";
+"delete_one_text" = "Запис і примітки до нього буде видалено з памʼяті телефона.";
+"delete_many_title" = "Видалити %@?";
+"delete_many_text" = "Записи разом із примітками зникнуть з памʼяті телефона. Відновити їх не вийде.";
+"action_delete" = "Видалити";
+"action_cancel" = "Скасувати";
+
+"history_title" = "Історія";
+"history_selected" = "Обрано %d";
+"action_select" = "Вибрати";
+"action_select_all" = "Обрати всі";
+"action_deselect_all" = "Зняти всі";
+"action_share_count" = "Поділитися (%d)";
+"history_empty_title" = "Поки що порожньо";
+"history_empty_hint" = "Зчитайте перший комплект на головному екрані.";
+"day_select" = "весь день";
+"day_deselect" = "зняти день";
+"day_today" = "Сьогодні";
+"day_yesterday" = "Вчора";
+
+"duplicate_title" = "Цей Starlink уже зчитували";
+"duplicate_existing" = "Запис від %@ уже є в історії.";
+"duplicate_hint" = "Оновити — свіжі дані переїдуть у той запис, примітки збережуться. В обох випадках комплект зʼявиться в сьогоднішньому дні.";
+"action_update_existing" = "Оновити наявний";
+"action_create_new" = "Створити новий";
+"record_untitled" = "Без ідентифікатора";
+
+"step_kit" = "Номер KIT з коробки";
+"step_dish_serial" = "Серійний номер тарілки";
+"step_modem_serial" = "Серійний номер модема";
+"step_progress" = "Крок %d з %d";
+
+"camera_permission_needed" = "Потрібен дозвіл на камеру";
+"scanner_unavailable" = "Сканер недоступний: %@";
+"camera_unavailable" = "Камера недоступна: %@";
+"scan_title_default" = "Сканування коду";
+"scan_hint" = "Рамку можна тягнути пальцем. Тап — фокус.";
+"scan_zone" = "Зона";
+"scan_zoom" = "Зум";
+"torch" = "Ліхтар";
+"torch_on" = "Ліхтар: увімк.";
+"action_skip" = "Пропустити";
+"scan_found" = "Знайдено код";
+"scan_verify" = "Звірте з тим, що надруковано на етикетці.";
+"scan_type" = "Тип: %@";
+"action_again" = "Ще раз";
+"action_confirm" = "Підтвердити";
+"code_generic" = "код";
+
+"error_nothing_captured" = "Не вдалося зняти жодного значення. Перевірте, що телефон підключений до Wi-Fi Starlink, або введіть дані вручну.";
+"error_network_silent" = "Пристрої не відповіли по мережі — відскановане збережено, мережеві поля можна дозаповнити вручну.";
+
+"share_header_one" = "Starlink — дані комплекту";
+"share_header_many" = "Starlink — %@";
+"share_date" = "Дата: %@";
+"share_generated" = "Сформовано: %@";
+"share_kit" = "KIT";
+"share_note" = "Примітка:";
+"share_chooser" = "Поділитися через";

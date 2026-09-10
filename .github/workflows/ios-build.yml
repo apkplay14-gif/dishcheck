@@ -1,0 +1,85 @@
+name: iOS build (unsigned, for SideStore)
+
+on:
+  push:
+    paths:
+      - "ios/**"
+      - "play/icon-512.png"
+      - ".github/workflows/ios-build.yml"
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    # Немає власного Mac — весь білд відбувається тут, на хмарному раннері GitHub.
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -p && xcodebuild -version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate 1024x1024 app icon from the Play Store icon
+        run: |
+          mkdir -p ios/StarlinkReader/Assets.xcassets/AppIcon.appiconset
+          sips -z 1024 1024 play/icon-512.png \
+            --out ios/StarlinkReader/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png
+
+      - name: Cache Swift Package Manager
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Caches/org.swift.swiftpm
+          key: spm-${{ hashFiles('ios/project.yml') }}
+          restore-keys: |
+            spm-
+
+      - name: Generate Xcode project
+        working-directory: ios
+        run: xcodegen generate
+
+      - name: Resolve Swift packages
+        working-directory: ios
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -project StarlinkReader.xcodeproj \
+            -scheme StarlinkReader
+
+      - name: Build unsigned .app for a generic iOS device
+        working-directory: ios
+        run: |
+          xcodebuild build \
+            -project StarlinkReader.xcodeproj \
+            -scheme StarlinkReader \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: Package as .ipa
+        working-directory: ios
+        run: |
+          set -e
+          APP_PATH="build/Build/Products/Release-iphoneos/StarlinkReader.app"
+          if [ ! -d "$APP_PATH" ]; then
+            echo "Build product not found at $APP_PATH"
+            find build/Build/Products -maxdepth 2 || true
+            exit 1
+          fi
+          mkdir -p Payload
+          cp -R "$APP_PATH" Payload/
+          zip -r -q StarlinkReader.ipa Payload
+          echo "Built: $(pwd)/StarlinkReader.ipa"
+
+      - name: Upload .ipa
+        uses: actions/upload-artifact@v4
+        with:
+          name: StarlinkReader-unsigned-ipa
+          path: ios/StarlinkReader.ipa
+          retention-days: 30

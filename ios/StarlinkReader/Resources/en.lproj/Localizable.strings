@@ -1,0 +1,119 @@
+/* Пункти меню «що зчитувати» */
+"menu_kit" = "KIT number from the box";
+"menu_dish_serial" = "Dish serial no.";
+"menu_modem_serial" = "Modem serial no.";
+"menu_starlink_id" = "Starlink ID";
+"menu_router_id" = "Router ID";
+"menu_mac" = "Modem MAC address";
+"hint_qr" = "QR / barcode";
+"hint_from_dish" = "over the network from the dish";
+"hint_from_router" = "over the network from the router";
+
+/* Головний екран */
+"capture_menu_title" = "What to capture";
+"capture_menu_selected" = "%d of 6 selected";
+"action_collapse" = "collapse ▲";
+"action_expand" = "expand ▼";
+"btn_start_capture" = "Start capture";
+"state_polling" = "Polling devices…";
+"warn_select_one" = "Select at least one item in the menu above.";
+"error_label" = "Failed";
+"action_understood" = "Got it";
+
+/* Стан підключення */
+"link_no_wifi_pill" = "No Wi-Fi";
+"link_no_wifi_title" = "Connect to Starlink Wi-Fi";
+"link_no_wifi_hint" = "Open Wi-Fi settings and join the Starlink router network.";
+"link_silent_pill" = "Not responding";
+"link_silent_title" = "Wi-Fi is up, Starlink is silent";
+"link_silent_hint" = "Make sure this is the Starlink network and the dish is powered. QR scanning works without a network.";
+"link_ready_pill" = "Online";
+"link_ready_title" = "Starlink is online";
+"link_ready_hint" = "Devices respond — ready to read.";
+"action_wifi_settings" = "Wi-Fi settings";
+"action_check" = "Check";
+
+/* Розділ «Додатково» */
+"advanced_collapse" = "Advanced ▲";
+"advanced_expand" = "Advanced ▼";
+"fallback_title" = "Fallback reading mode";
+"fallback_hint" = "Turn this on only if normal reading fails: the request is sent without the device schema.";
+"log_title" = "Last read log";
+"action_send_log" = "Send log";
+"privacy_options" = "Privacy settings";
+
+/* Картка комплекту */
+"section_kit" = "Kit";
+"section_network" = "From the network";
+"action_retry_network" = "Poll the devices again";
+"notes_label" = "My notes";
+"notes_placeholder" = "Address, client, equipment condition…";
+"action_share" = "Share";
+"value_not_read" = "not read";
+
+/* Видалення */
+"delete_one_title" = "Delete this record?";
+"delete_one_text" = "The record and its notes will be deleted from the phone.";
+"delete_many_title" = "Delete %@?";
+"delete_many_text" = "The records and their notes will disappear from the phone. They cannot be recovered.";
+"action_delete" = "Delete";
+"action_cancel" = "Cancel";
+
+/* Історія */
+"history_title" = "History";
+"history_selected" = "%d selected";
+"action_select" = "Select";
+"action_select_all" = "Select all";
+"action_deselect_all" = "Deselect all";
+"action_share_count" = "Share (%d)";
+"history_empty_title" = "Nothing here yet";
+"history_empty_hint" = "Capture your first kit on the home screen.";
+"day_select" = "select day";
+"day_deselect" = "deselect day";
+"day_today" = "Today";
+"day_yesterday" = "Yesterday";
+
+/* Повторне зчитування того самого комплекту */
+"duplicate_title" = "This Starlink was read before";
+"duplicate_existing" = "A record from %@ is already in the history.";
+"duplicate_hint" = "Update — the fresh data moves into that record and the notes are kept. Either way the kit shows up under today.";
+"action_update_existing" = "Update existing";
+"action_create_new" = "Create new";
+"record_untitled" = "No identifier";
+
+/* Кроки сканування */
+"step_kit" = "KIT number from the box";
+"step_dish_serial" = "Dish serial number";
+"step_modem_serial" = "Modem serial number";
+"step_progress" = "Step %d of %d";
+
+/* Сканер */
+"camera_permission_needed" = "Camera permission is required";
+"scanner_unavailable" = "Scanner unavailable: %@";
+"camera_unavailable" = "Camera unavailable: %@";
+"scan_title_default" = "Scanning a code";
+"scan_hint" = "Drag the frame with your finger. Tap to focus.";
+"scan_zone" = "Zone";
+"scan_zoom" = "Zoom";
+"torch" = "Torch";
+"torch_on" = "Torch: on";
+"action_skip" = "Skip";
+"scan_found" = "Code found";
+"scan_verify" = "Check it against what is printed on the label.";
+"scan_type" = "Type: %@";
+"action_again" = "Again";
+"action_confirm" = "Confirm";
+"code_generic" = "code";
+
+/* Помилки зчитування */
+"error_nothing_captured" = "Nothing could be captured. Check that the phone is connected to the Starlink Wi-Fi, or enter the data by hand.";
+"error_network_silent" = "The devices did not answer over the network — what was scanned is saved, and the network fields can be filled in by hand.";
+
+/* Текст для месенджера */
+"share_header_one" = "Starlink — kit data";
+"share_header_many" = "Starlink — %@";
+"share_date" = "Date: %@";
+"share_generated" = "Generated: %@";
+"share_kit" = "KIT";
+"share_note" = "Note:";
+"share_chooser" = "Share via";

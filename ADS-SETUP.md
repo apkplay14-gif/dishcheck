@@ -27,10 +27,11 @@
 - Текст політики конфіденційності — [docs/index.html](docs/index.html), українською та англійською
 - Бібліотеки: `play-services-ads 25.4.0`, `user-messaging-platform 4.0.0`
 
-**Стоять бойові ідентифікатори AdMob** (підставлені 9 вересня 2026).
-**Тиснути банер зі свого телефона не можна** — один клік по власній рекламі
-є приводом для довічного блокування акаунта. Для перевірок повертайте тестові
-ідентифікатори Google, вони наведені нижче.
+**Бойові ідентифікатори AdMob** (з 9 вересня 2026) лежать у `keystore.properties`,
+поза git, і потрапляють **лише в release-збірку**. Debug-збірка завжди показує
+тестову рекламу Google — перевіряйте банер на ній.
+**Тиснути банер release-збірки зі свого телефона не можна** — один клік по власній
+рекламі є приводом для довічного блокування акаунта.
 
 ---
 
@@ -53,7 +54,7 @@
 
 ```bash
 mkdir ye-starlink-privacy && cd ye-starlink-privacy
-cp "D:/CLODE/Starlink/docs/index.html" .
+cp <тека проєкту>/docs/index.html .
 git init && git add . && git commit -m "Privacy policy"
 ```
 
@@ -88,19 +89,21 @@ https://ВАШ_НІК.github.io/ye-starlink-privacy/
 
 ### Крок 4. Підставити ідентифікатори
 
-Єдине місце — [app/build.gradle.kts](app/build.gradle.kts), рядки 23–24:
+Єдине місце — `keystore.properties` у корені проєкту (у git не потрапляє):
 
-```kotlin
-manifestPlaceholders["admobAppId"] = "ca-app-pub-ВАШ~APP_ID"
-buildConfigField("String", "AD_UNIT_ID", "\"ca-app-pub-ВАШ/AD_UNIT_ID\"")
+```properties
+admobAppId=ca-app-pub-ВАШ~APP_ID
+admobBannerId=ca-app-pub-ВАШ/AD_UNIT_ID
 ```
 
-Більше ніде їх міняти не треба — далі вони самі розходяться в маніфест і в код.
-Після зміни: `gradlew.bat assembleDebug`.
+Більше ніде їх міняти не треба: release-збірка сама підставить їх у маніфест і в
+код ([app/build.gradle.kts](app/build.gradle.kts), блок `release`). Debug-збірка
+їх не бере ніколи — у ній завжди тестові ідентифікатори.
+Після зміни: `gradlew.bat bundleRelease`.
 
 > **Ніколи не тисніть власну справжню рекламу.** За це блокують акаунт назавжди,
-> і відновити його практично неможливо. Для будь-якої перевірки повертайте тестові
-> ідентифікатори — вони записані нижче.
+> і відновити його практично неможливо. Для будь-якої перевірки беріть
+> debug-збірку — у ній тестові ідентифікатори, вони ж записані нижче.
 
 ### Крок 5. Створити повідомлення GDPR
 
@@ -133,7 +136,7 @@ buildConfigField("String", "AD_UNIT_ID", "\"ca-app-pub-ВАШ/AD_UNIT_ID\"")
 1. Запустіть застосунок з підключеним `adb logcat`
 2. Знайдіть у логах рядок виду:
    `Use new ConsentDebugSettings.Builder().addTestDeviceHashedId("ABC123...")`
-3. Вставте цей хеш у [app/build.gradle.kts](app/build.gradle.kts), рядок 32:
+3. Вставте цей хеш у [app/build.gradle.kts](app/build.gradle.kts), поле `CONSENT_TEST_DEVICE_ID`:
    ```kotlin
    buildConfigField("String", "CONSENT_TEST_DEVICE_ID", "\"ABC123...\"")
    ```
@@ -145,15 +148,15 @@ buildConfigField("String", "AD_UNIT_ID", "\"ca-app-pub-ВАШ/AD_UNIT_ID\"")
 
 ## Як вимкнути рекламу повністю
 
-[app/build.gradle.kts](app/build.gradle.kts), рядок 27:
+[app/build.gradle.kts](app/build.gradle.kts), поле `SHOW_ADS`:
 
 ```kotlin
 buildConfigField("boolean", "SHOW_ADS", "false")
 ```
 
 Банер зникає, SDK не ініціалізується, форма згоди не показується.
-Бібліотеки лишаться в APK — щоб прибрати й їх, видаліть два рядки залежностей
-(85–86) і файли `ui/AdBanner.kt`, `ads/AdsConsent.kt`, а також виклик
+Бібліотеки лишаться в APK — щоб прибрати й їх, видаліть дві залежності
+`play.services.ads` і `user.messaging.platform` і файли `ui/AdBanner.kt`, `ads/AdsConsent.kt`, а також виклик
 `AdsConsent.gather(this)` у `MainActivity` і `bottomBar = { AdBanner() }` та
 `PrivacyOptionsEntry()` у `ui/Screens.kt`.
 

@@ -27,14 +27,12 @@ android {
         versionName = "1.3"
 
         // ------------------------------------------------------------------ реклама
-        // БОЙОВІ ідентифікатори AdMob. Тиснути цей банер зі свого телефона НЕ МОЖНА:
-        // один клік по власній рекламі — привід для довічного блокування акаунта.
-        // Для будь-якої перевірки поверніть сюди тестові ідентифікатори Google:
-        //   App ID   ca-app-pub-3940256099942544~3347511713
-        //   Ad unit  ca-app-pub-3940256099942544/9214589741
-        // Свої з AdMob підставляються тільки тут, більше ніде.
-        manifestPlaceholders["admobAppId"] = "ca-app-pub-8847726899043038~5601637383"
-        buildConfigField("String", "AD_UNIT_ID", "\"ca-app-pub-8847726899043038/6543183969\"")
+        // Тут — тестові ідентифікатори Google: така збірка показує лише позначену
+        // тестову рекламу й не може зачепити акаунт AdMob. Бойові підставляє
+        // тільки release (нижче) з keystore.properties, тож у коді їх немає, і
+        // чужа збірка з цього репозиторію ніколи не покаже вашу рекламу.
+        manifestPlaceholders["admobAppId"] = "ca-app-pub-3940256099942544~3347511713"
+        buildConfigField("String", "AD_UNIT_ID", "\"ca-app-pub-3940256099942544/9214589741\"")
 
         // Один вимикач на всю рекламу: false — банера немає взагалі.
         buildConfigField("boolean", "SHOW_ADS", "true")
@@ -60,6 +58,19 @@ android {
         release {
             if (keystorePropsFile.exists()) {
                 signingConfig = signingConfigs.getByName("release")
+            }
+
+            // БОЙОВІ ідентифікатори AdMob — тільки тут і тільки з keystore.properties.
+            // Тиснути цей банер зі свого телефона НЕ МОЖНА: один клік по власній
+            // рекламі — привід для довічного блокування акаунта. Для перевірок є
+            // debug-збірка, вона завжди з тестовою рекламою.
+            val admobAppId = keystoreProps.getProperty("admobAppId")
+            val admobBannerId = keystoreProps.getProperty("admobBannerId")
+            if (admobAppId != null && admobBannerId != null) {
+                manifestPlaceholders["admobAppId"] = admobAppId
+                buildConfigField("String", "AD_UNIT_ID", "\"$admobBannerId\"")
+            } else if (keystorePropsFile.exists()) {
+                logger.warn("keystore.properties has no admobAppId/admobBannerId: release will show Google TEST ads")
             }
 
             // R8 вимкнено навмисно: protobuf-java будує повідомлення через рефлексію

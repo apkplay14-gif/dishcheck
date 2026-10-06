@@ -38,6 +38,21 @@
     <string name="action_send_log">Надіслати журнал</string>
     <string name="privacy_options">Налаштування конфіденційності</string>
 
+    <string name="speed_test_title">Тест швидкості</string>
+    <string name="speed_test_ping_label">Пінг</string>
+    <string name="speed_test_download_label">Завантаження</string>
+    <string name="speed_test_upload_label">Вивантаження</string>
+    <string name="speed_test_ms_value">%1$d мс</string>
+    <string name="speed_test_mbps_value">%1$.1f Мбіт/с</string>
+    <string name="speed_test_start">Почати тест</string>
+    <string name="speed_test_retry">Повторити тест</string>
+    <string name="speed_test_running_ping">Вимірюємо пінг…</string>
+    <string name="speed_test_running_download">Вимірюємо завантаження…</string>
+    <string name="speed_test_running_upload">Вимірюємо вивантаження…</string>
+    <string name="speed_test_hint">Перевіряє швидкість поточного Wi-Fi (інтернет тарілки), а не з\'єднання між телефоном і тарілкою.</string>
+    <string name="speed_test_error_no_wifi">Немає Wi-Fi з\'єднання. Підключіться до мережі Starlink і спробуйте ще раз.</string>
+    <string name="speed_test_error_generic">Не вдалося виміряти швидкість. Перевірте з\'єднання і спробуйте ще раз.</string>
+
     <string name="section_kit">Комплект</string>
     <string name="section_network">З мережі</string>
     <string name="action_retry_network">Опитати пристрої ще раз</string>
@@ -104,6 +119,17 @@
     <string name="share_generated">Сформовано: %1$s</string>
     <string name="share_note">Примітка:</string>
     <string name="share_chooser">Поділитися через</string>
+
+    <string name="demo_invite">Немає Starlink поруч?</string>
+    <string name="demo_start">Спробувати демо</string>
+    <string name="demo_title">Демо-режим</string>
+    <string name="demo_pill">ДЕМО</string>
+    <string name="demo_hint">Вигадані дані, Starlink не потрібен. У сканері натисніть «Демо-код». Нічого не зберігається, ваша справжня історія не змінюється.</string>
+    <string name="demo_exit">Вийти з демо</string>
+    <string name="scan_demo_code">Демо-код</string>
+    <string name="demo_share_mark">[ДЕМО] Приклад із демо-режиму «%1$s» — дані вигадані.</string>
+    <string name="demo_note_1">Склад №2, монтаж на даху</string>
+    <string name="demo_note_2">Магазин на Центральній, тарілка на балконі</string>
 
     <plurals name="records">
         <item quantity="one">%d запис</item>

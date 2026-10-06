@@ -23,8 +23,8 @@ android {
         applicationId = "com.dishcheck.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 20
+        versionName = "1.3"
 
         // ------------------------------------------------------------------ реклама
         // БОЙОВІ ідентифікатори AdMob. Тиснути цей банер зі свого телефона НЕ МОЖНА:
@@ -66,6 +66,13 @@ android {
             // дескрипторів, і скорочення коду ламає динамічний розбір відповіді Starlink.
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+
+            // Щоб Play Console сам умів розшифровувати аварійні завершення в
+            // нативних бібліотеках (ML Kit, CameraX) без ручного завантаження
+            // символів після кожного релізу.
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"
+            }
         }
     }
 
@@ -118,4 +125,7 @@ dependencies {
     implementation(libs.mlkit.barcode)
     implementation(libs.play.services.ads)
     implementation(libs.user.messaging.platform)
+    implementation(libs.play.review.ktx)
+
+    testImplementation(libs.junit)
 }

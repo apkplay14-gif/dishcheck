@@ -59,6 +59,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import ua.starlink.reader.R
 import ua.starlink.reader.DuplicatePrompt
+import ua.starlink.reader.SpeedTestUiState
 import ua.starlink.reader.UiState
 import ua.starlink.reader.data.CaptureSettings
 import ua.starlink.reader.data.EditableField
@@ -71,6 +72,7 @@ sealed interface Screen {
     data object Home : Screen
     data object History : Screen
     data class Detail(val uid: String) : Screen
+    data object SpeedTest : Screen
 }
 
 /** Дії, які екрани делегують назовні (Activity / ViewModel). */
@@ -89,6 +91,9 @@ class AppActions(
     val onShare: (text: String) -> Unit,
     val onAllowRawProbe: (Boolean) -> Unit,
     val onDismissError: () -> Unit,
+    val onRunSpeedTest: () -> Unit,
+    val onStartDemo: () -> Unit,
+    val onExitDemo: () -> Unit,
 )
 
 /** Одна позиція меню: номер, іконка, назва, підказка. */
@@ -121,6 +126,7 @@ fun AppRoot(state: UiState, actions: AppActions) {
             state = state,
             actions = actions,
             onOpenHistory = { screen = Screen.History },
+            onOpenSpeedTest = { screen = Screen.SpeedTest },
         )
 
         Screen.History -> HistoryScreen(
@@ -135,6 +141,7 @@ fun AppRoot(state: UiState, actions: AppActions) {
             if (reading != null) {
                 DetailScreen(
                     reading = reading,
+                    demo = state.demo,
                     actions = actions,
                     onBack = { screen = Screen.History },
                 )
@@ -148,6 +155,12 @@ fun AppRoot(state: UiState, actions: AppActions) {
                 )
             }
         }
+
+        Screen.SpeedTest -> SpeedTestScreen(
+            state = state.speedTest,
+            onStart = actions.onRunSpeedTest,
+            onBack = { screen = Screen.Home },
+        )
     }
 }
 
@@ -155,7 +168,12 @@ fun AppRoot(state: UiState, actions: AppActions) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomeScreen(state: UiState, actions: AppActions, onOpenHistory: () -> Unit) {
+private fun HomeScreen(
+    state: UiState,
+    actions: AppActions,
+    onOpenHistory: () -> Unit,
+    onOpenSpeedTest: () -> Unit,
+) {
     Box(Modifier.fillMaxSize().background(Brand.Ink)) {
         OrbitBackdrop(Modifier.fillMaxWidth().height(340.dp))
 
@@ -168,6 +186,9 @@ private fun HomeScreen(state: UiState, actions: AppActions, onOpenHistory: () ->
                         containerColor = Color.Transparent
                     ),
                     actions = {
+                        TextButton(onClick = onOpenSpeedTest) {
+                            RowIcon(R.drawable.ic_speed, Brand.TextPrimary, size = 18)
+                        }
                         TextButton(onClick = onOpenHistory) {
                             RowIcon(R.drawable.ic_history, Brand.TextPrimary, size = 18)
                             Spacer(Modifier.width(6.dp))
@@ -176,7 +197,12 @@ private fun HomeScreen(state: UiState, actions: AppActions, onOpenHistory: () ->
                     },
                 )
             },
-            bottomBar = { AdBanner() },
+            bottomBar = {
+                // У демо реклами немає: його записують на відео для Play і показують
+                // рецензенту, а покази власної бойової реклами під час таких записів
+                // AdMob може зарахувати як накрутку.
+                if (!state.demo) AdBanner()
+            },
         ) { padding ->
             Column(
                 modifier = Modifier
@@ -186,6 +212,7 @@ private fun HomeScreen(state: UiState, actions: AppActions, onOpenHistory: () ->
                     .padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
+                if (state.demo) DemoBanner(onExit = actions.onExitDemo)
                 LinkStatusCard(state, actions)
                 CaptureMenuCard(state.settings, actions.onSettingsChange)
                 StartButton(state, actions)
@@ -314,11 +341,44 @@ private fun ErrorCard(message: String, onDismiss: () -> Unit) {
     }
 }
 
+/** Плашка демо-режиму: щоб вигадані дані ніхто не сплутав зі справжніми. */
+@Composable
+private fun DemoBanner(onExit: () -> Unit) {
+    BrandCard {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                RowIcon(R.drawable.ic_demo, Brand.Waiting, size = 24)
+                Text(
+                    stringResource(R.string.demo_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.weight(1f),
+                )
+                DemoPill()
+            }
+            Text(
+                stringResource(R.string.demo_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = Brand.TextMuted,
+            )
+            TextButton(onClick = onExit) { Text(stringResource(R.string.demo_exit)) }
+        }
+    }
+}
+
+@Composable
+private fun DemoPill(modifier: Modifier = Modifier) {
+    StatusPill(Brand.Waiting, stringResource(R.string.demo_pill), modifier)
+}
+
 @Composable
 private fun LinkStatusCard(state: UiState, actions: AppActions) {
     data class Look(val color: Color, val pill: String, val title: String, val hint: String)
 
-    val look = when (state.link) {
+    val link = state.shownLink
+    val look = when (link) {
         LinkState.NO_WIFI -> Look(
             Brand.Alert,
             stringResource(R.string.link_no_wifi_pill),
@@ -341,7 +401,7 @@ private fun LinkStatusCard(state: UiState, actions: AppActions) {
         )
     }
 
-    BrandCard(accent = state.link == LinkState.READY) {
+    BrandCard(accent = link == LinkState.READY) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -369,7 +429,7 @@ private fun LinkStatusCard(state: UiState, actions: AppActions) {
             )
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                if (state.link == LinkState.NO_WIFI) {
+                if (link == LinkState.NO_WIFI) {
                     OutlinedButton(
                         onClick = actions.onOpenWifiSettings,
                         shape = MaterialTheme.shapes.small,
@@ -381,6 +441,25 @@ private fun LinkStatusCard(state: UiState, actions: AppActions) {
                     RowIcon(R.drawable.ic_refresh, Brand.Accent, size = 16)
                     Spacer(Modifier.width(6.dp))
                     Text(stringResource(R.string.action_check))
+                }
+            }
+
+            // Вхід у демо — саме тут: це перше, що бачить людина без Starlink поруч,
+            // зокрема рецензент Google. У самому демо картка й так «на звʼязку».
+            if (link != LinkState.READY) {
+                HorizontalDivider(color = Brand.Hairline)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        stringResource(R.string.demo_invite),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Brand.TextMuted,
+                        modifier = Modifier.weight(1f),
+                    )
+                    TextButton(onClick = actions.onStartDemo) {
+                        RowIcon(R.drawable.ic_demo, Brand.Accent, size = 16)
+                        Spacer(Modifier.width(6.dp))
+                        Text(stringResource(R.string.demo_start))
+                    }
                 }
             }
         }
@@ -802,13 +881,19 @@ private fun HistoryScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        if (picking) {
-                            stringResource(R.string.history_selected, chosen.size)
-                        } else {
-                            stringResource(R.string.history_title)
-                        }
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        Text(
+                            if (picking) {
+                                stringResource(R.string.history_selected, chosen.size)
+                            } else {
+                                stringResource(R.string.history_title)
+                            }
+                        )
+                        if (state.demo) DemoPill()
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                 navigationIcon = {
@@ -1079,17 +1164,29 @@ private fun HistoryRow(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DetailScreen(reading: Reading, actions: AppActions, onBack: () -> Unit) {
+private fun DetailScreen(
+    reading: Reading,
+    demo: Boolean,
+    actions: AppActions,
+    onBack: () -> Unit,
+) {
     Scaffold(
         containerColor = Brand.Ink,
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        reading.titleOrNull ?: stringResource(R.string.record_untitled),
-                        maxLines = 1,
-                        style = MonoValue,
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        Text(
+                            reading.titleOrNull ?: stringResource(R.string.record_untitled),
+                            maxLines = 1,
+                            style = MonoValue,
+                            modifier = Modifier.weight(1f, fill = false),
+                        )
+                        if (demo) DemoPill()
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
                 navigationIcon = {

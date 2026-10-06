@@ -38,6 +38,21 @@
     <string name="action_send_log">Wyślij dziennik</string>
     <string name="privacy_options">Ustawienia prywatności</string>
 
+    <string name="speed_test_title">Test prędkości</string>
+    <string name="speed_test_ping_label">Ping</string>
+    <string name="speed_test_download_label">Pobieranie</string>
+    <string name="speed_test_upload_label">Wysyłanie</string>
+    <string name="speed_test_ms_value">%1$d ms</string>
+    <string name="speed_test_mbps_value">%1$.1f Mb/s</string>
+    <string name="speed_test_start">Rozpocznij test</string>
+    <string name="speed_test_retry">Testuj ponownie</string>
+    <string name="speed_test_running_ping">Mierzenie pingu…</string>
+    <string name="speed_test_running_download">Mierzenie pobierania…</string>
+    <string name="speed_test_running_upload">Mierzenie wysyłania…</string>
+    <string name="speed_test_hint">Mierzy prędkość bieżącego Wi-Fi (internetu z talerza), a nie połączenia między telefonem a talerzem.</string>
+    <string name="speed_test_error_no_wifi">Brak połączenia Wi-Fi. Połącz się z siecią Starlink i spróbuj ponownie.</string>
+    <string name="speed_test_error_generic">Nie udało się zmierzyć prędkości. Sprawdź połączenie i spróbuj ponownie.</string>
+
     <string name="section_kit">Zestaw</string>
     <string name="section_network">Z sieci</string>
     <string name="action_retry_network">Odpytaj urządzenia ponownie</string>
@@ -104,6 +119,17 @@
     <string name="share_generated">Wygenerowano: %1$s</string>
     <string name="share_note">Notatka:</string>
     <string name="share_chooser">Udostępnij przez</string>
+
+    <string name="demo_invite">Nie masz Starlinka w pobliżu?</string>
+    <string name="demo_start">Wypróbuj demo</string>
+    <string name="demo_title">Tryb demo</string>
+    <string name="demo_pill">DEMO</string>
+    <string name="demo_hint">Przykładowe dane, Starlink nie jest potrzebny. W skanerze dotknij „Kod demo”. Nic nie jest zapisywane, a twoja prawdziwa historia się nie zmienia.</string>
+    <string name="demo_exit">Zakończ demo</string>
+    <string name="scan_demo_code">Kod demo</string>
+    <string name="demo_share_mark">[DEMO] Przykład z trybu demo „%1$s” — dane są zmyślone.</string>
+    <string name="demo_note_1">Magazyn nr 2, montaż na dachu</string>
+    <string name="demo_note_2">Sklep przy Centralnej, antena na balkonie</string>
 
     <plurals name="records">
         <item quantity="one">%d wpis</item>

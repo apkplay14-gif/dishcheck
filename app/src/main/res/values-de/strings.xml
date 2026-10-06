@@ -38,6 +38,21 @@
     <string name="action_send_log">Protokoll senden</string>
     <string name="privacy_options">Datenschutz-Einstellungen</string>
 
+    <string name="speed_test_title">Geschwindigkeitstest</string>
+    <string name="speed_test_ping_label">Ping</string>
+    <string name="speed_test_download_label">Download</string>
+    <string name="speed_test_upload_label">Upload</string>
+    <string name="speed_test_ms_value">%1$d ms</string>
+    <string name="speed_test_mbps_value">%1$.1f Mbit/s</string>
+    <string name="speed_test_start">Test starten</string>
+    <string name="speed_test_retry">Test wiederholen</string>
+    <string name="speed_test_running_ping">Ping wird gemessen…</string>
+    <string name="speed_test_running_download">Download wird gemessen…</string>
+    <string name="speed_test_running_upload">Upload wird gemessen…</string>
+    <string name="speed_test_hint">Misst die Geschwindigkeit des aktuellen WLANs (Internet der Schüssel), nicht die Verbindung zwischen Telefon und Schüssel.</string>
+    <string name="speed_test_error_no_wifi">Keine WLAN-Verbindung. Mit dem Starlink-Netzwerk verbinden und erneut versuchen.</string>
+    <string name="speed_test_error_generic">Geschwindigkeit konnte nicht gemessen werden. Verbindung prüfen und erneut versuchen.</string>
+
     <string name="section_kit">Kit</string>
     <string name="section_network">Aus dem Netzwerk</string>
     <string name="action_retry_network">Geräte erneut abfragen</string>
@@ -104,6 +119,17 @@
     <string name="share_generated">Erstellt: %1$s</string>
     <string name="share_note">Notiz:</string>
     <string name="share_chooser">Teilen über</string>
+
+    <string name="demo_invite">Kein Starlink in der Nähe?</string>
+    <string name="demo_start">Demo ausprobieren</string>
+    <string name="demo_title">Demo-Modus</string>
+    <string name="demo_pill">DEMO</string>
+    <string name="demo_hint">Beispieldaten, kein Starlink nötig. Tippe im Scanner auf „Demo-Code“. Es wird nichts gespeichert, dein echter Verlauf bleibt unverändert.</string>
+    <string name="demo_exit">Demo beenden</string>
+    <string name="scan_demo_code">Demo-Code</string>
+    <string name="demo_share_mark">[DEMO] Beispiel aus dem Demo-Modus von „%1$s“ – die Daten sind erfunden.</string>
+    <string name="demo_note_1">Lager Nr. 2, Dachmontage</string>
+    <string name="demo_note_2">Laden in der Hauptstraße, Antenne auf dem Balkon</string>
 
     <plurals name="records">
         <item quantity="one">%d Eintrag</item>

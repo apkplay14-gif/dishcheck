@@ -5,21 +5,29 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ua.starlink.reader.data.CaptureSettings
+import ua.starlink.reader.data.DemoData
 import ua.starlink.reader.data.EditableField
 import ua.starlink.reader.data.HistoryStore
 import ua.starlink.reader.data.QrStep
 import ua.starlink.reader.data.Reading
+import ua.starlink.reader.data.ReviewPromptState
+import ua.starlink.reader.data.ReviewPromptStore
 import ua.starlink.reader.data.SettingsStore
 import ua.starlink.reader.net.LinkState
 import ua.starlink.reader.net.NetUtil
+import ua.starlink.reader.net.SpeedTestClient
 import ua.starlink.reader.net.StarlinkClient
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.UUID
 
 data class UiState(
@@ -35,9 +43,26 @@ data class UiState(
     val allowRawProbe: Boolean = false,
     /** Знайдено повтор за Starlink ID — треба спитати користувача, що робити. */
     val duplicate: DuplicatePrompt? = null,
+    val speedTest: SpeedTestUiState = SpeedTestUiState(),
+    /** Демо-режим: вигадані дані замість тарілки й роутера, справжня історія відкладена. */
+    val demo: Boolean = false,
 ) {
     val current: Reading? get() = history.firstOrNull { it.uid == currentUid }
+
+    /** У демо картка підключення показує те, що людина бачила б біля справжнього Starlink. */
+    val shownLink: LinkState get() = if (demo) LinkState.READY else link
 }
+
+/** Крок, на якому зараз перебуває тест швидкості інтернету. */
+enum class SpeedTestPhase { IDLE, PING, DOWNLOAD, UPLOAD, DONE, ERROR }
+
+data class SpeedTestUiState(
+    val phase: SpeedTestPhase = SpeedTestPhase.IDLE,
+    val pingMs: Long? = null,
+    val downloadMbps: Double? = null,
+    val uploadMbps: Double? = null,
+    val error: String? = null,
+)
 
 /** Щойно зчитаний комплект збігся за Starlink ID з тим, що вже є в історії. */
 data class DuplicatePrompt(
@@ -51,15 +76,30 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     private val store = HistoryStore(app)
     private val settingsStore = SettingsStore(app)
+    private val reviewStore = ReviewPromptStore(app)
+    private var reviewPromptState = ReviewPromptState()
     private var persistJob: Job? = null
     private val _state = MutableStateFlow(UiState())
     val state: StateFlow<UiState> = _state.asStateFlow()
+
+    /** Одноразова подія «покажи системний діалог оцінки» — ловить MainActivity. */
+    private val _reviewRequests = Channel<Unit>(Channel.CONFLATED)
+    val reviewRequests = _reviewRequests.receiveAsFlow()
+
+    /** Справжня історія, відкладена на час демо. null — демо не запущене. */
+    private var stashedHistory: List<Reading>? = null
+
+    /** Порядковий номер кожного демо-комплекту: з нього складаються всі його значення. */
+    private val demoSeq = HashMap<String, Int>()
+    private var demoCounter = 0
+    private var demoJob: Job? = null
 
     init {
         _state.value = _state.value.copy(
             history = store.load(),
             settings = settingsStore.load(),
         )
+        reviewPromptState = reviewStore.load()
         refreshLink()
     }
 
@@ -85,6 +125,128 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    // ------------------------------------------------------------------ тест швидкості
+
+    private var speedTestJob: Job? = null
+
+    /**
+     * Тест іде саме через Wi-Fi мережу (ту, до якої підключена тарілка), а не
+     * через типове підключення телефона — інакше при увімкнених мобільних
+     * даних результат показував би швидкість не Starlink, а стільникової
+     * мережі. Немає Wi-Fi — тест і не починається.
+     */
+    fun runSpeedTest() {
+        val busy = _state.value.speedTest.phase.let {
+            it == SpeedTestPhase.PING || it == SpeedTestPhase.DOWNLOAD || it == SpeedTestPhase.UPLOAD
+        }
+        if (busy) return
+
+        val network = NetUtil.wifiNetwork(getApplication())
+        if (network == null) {
+            _state.value = _state.value.copy(
+                speedTest = SpeedTestUiState(
+                    phase = SpeedTestPhase.ERROR,
+                    error = string(R.string.speed_test_error_no_wifi),
+                ),
+            )
+            return
+        }
+
+        _state.value = _state.value.copy(speedTest = SpeedTestUiState(phase = SpeedTestPhase.PING))
+
+        speedTestJob?.cancel()
+        speedTestJob = viewModelScope.launch {
+            val client = SpeedTestClient(network.socketFactory)
+            try {
+                val ping = withContext(Dispatchers.IO) { client.measurePingMs() }
+                _state.value = _state.value.copy(
+                    speedTest = _state.value.speedTest.copy(phase = SpeedTestPhase.DOWNLOAD, pingMs = ping),
+                )
+
+                val download = withContext(Dispatchers.IO) { client.measureDownloadMbps() }
+                _state.value = _state.value.copy(
+                    speedTest = _state.value.speedTest.copy(
+                        phase = SpeedTestPhase.UPLOAD,
+                        downloadMbps = download,
+                    ),
+                )
+
+                val upload = withContext(Dispatchers.IO) { client.measureUploadMbps() }
+                _state.value = _state.value.copy(
+                    speedTest = _state.value.speedTest.copy(phase = SpeedTestPhase.DONE, uploadMbps = upload),
+                )
+            } catch (e: Exception) {
+                _state.value = _state.value.copy(
+                    speedTest = _state.value.speedTest.copy(
+                        phase = SpeedTestPhase.ERROR,
+                        error = string(R.string.speed_test_error_generic),
+                    ),
+                )
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------ демо-режим
+
+    /**
+     * Демо — окрема пісочниця в пам'яті: справжня історія відкладається вбік і
+     * в файл не пишеться нічого, тож вийти з демо можна будь-коли без наслідків.
+     * Два готові комплекти в історії потрібні, щоб одразу було що відкрити,
+     * виділити по днях і переслати кілька разом.
+     */
+    fun startDemo() {
+        if (_state.value.demo || _state.value.reading) return
+        stashedHistory = _state.value.history
+        demoSeq.clear()
+
+        val yesterday = LocalDate.now().minusDays(1).atTime(15, 40)
+            .atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        val earlierToday = System.currentTimeMillis() - 90L * 60 * 1000
+        val samples = listOf(
+            demoSample(seq = 1, timestamp = yesterday, note = string(R.string.demo_note_1)),
+            demoSample(seq = 2, timestamp = earlierToday, note = string(R.string.demo_note_2)),
+        )
+        demoCounter = samples.size
+
+        _state.value = _state.value.copy(
+            demo = true,
+            history = samples.sortedByDescending { it.timestamp },
+            currentUid = null,
+            error = null,
+            diagnostics = null,
+            duplicate = null,
+        )
+    }
+
+    private fun demoSample(seq: Int, timestamp: Long, note: String): Reading {
+        val uid = UUID.randomUUID().toString()
+        demoSeq[uid] = seq
+        return DemoData.reading(uid = uid, seq = seq, timestamp = timestamp, note = note)
+    }
+
+    fun exitDemo() {
+        val real = stashedHistory ?: return
+        demoJob?.cancel()
+        stashedHistory = null
+        demoSeq.clear()
+        _state.value = _state.value.copy(
+            demo = false,
+            history = real,
+            reading = false,
+            currentUid = null,
+            error = null,
+            diagnostics = null,
+            duplicate = null,
+        )
+    }
+
+    /** Що демо-сканер підставить на цьому кроці; null — демо не запущене. */
+    fun demoScanValue(uid: String, step: QrStep): String? {
+        if (!_state.value.demo) return null
+        val seq = demoSeq[uid] ?: return null
+        return DemoData.scanValue(step, seq)
+    }
+
     // ------------------------------------------------------------------ зчитування
 
     /** Створює порожній запис і робить його поточним. Повертає його uid. */
@@ -94,6 +256,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             timestamp = System.currentTimeMillis(),
             settings = _state.value.settings,
         )
+        if (_state.value.demo) demoSeq[reading.uid] = ++demoCounter
         val history = listOf(reading) + _state.value.history
         persist(history)
         _state.value = _state.value.copy(
@@ -125,6 +288,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         if (_state.value.reading) return
 
         _state.value = _state.value.copy(reading = true, error = null)
+
+        if (_state.value.demo) {
+            runDemoNetworkStep(uid, settings, isNewCapture)
+            return
+        }
 
         viewModelScope.launch {
             val allowRaw = _state.value.allowRawProbe
@@ -167,6 +335,27 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    /**
+     * Опитування без мережі: відповідають вигадані тарілка й роутер. Пауза — як
+     * у справжнього опитування, інакше крок «Опитування пристроїв…» на відео
+     * проскакує непомітно.
+     */
+    private fun runDemoNetworkStep(uid: String, settings: CaptureSettings, isNewCapture: Boolean) {
+        val seq = demoSeq[uid] ?: 0
+        demoJob = viewModelScope.launch {
+            delay(DEMO_POLL_MS)
+            val dish = if (settings.needsDish) DemoData.dish(seq) else null
+            val router = if (settings.needsRouter) {
+                DemoData.router(seq, withMac = settings.modemMac)
+            } else {
+                null
+            }
+            update(uid) { it.copy(dish = dish, router = router, diagnostics = DemoData.LOG) }
+            _state.value = _state.value.copy(reading = false)
+            finishCapture(uid, networkFailed = false, diagnostics = DemoData.LOG, isNewCapture)
+        }
+    }
+
     /** Прибирає порожній запис і показує помилку, якщо зняти не вдалося нічого. */
     private fun finishCapture(
         uid: String,
@@ -193,7 +382,35 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             error = if (networkFailed) string(R.string.error_network_silent) else null,
         )
 
-        if (isNewCapture) checkDuplicate(reading)
+        if (isNewCapture) {
+            checkDuplicate(reading)
+            // Не питаємо відгук одночасно з діалогом «такий комплект вже є» —
+            // це не той щасливий момент, коли варто відволікати проханням оцінити.
+            // І не в демо: це ще не справжня робота, а рецензенту Google
+            // прохання оцінити застосунок і поготів ні до чого.
+            val happyEnding = !networkFailed && _state.value.duplicate == null
+            if (happyEnding && !_state.value.demo) maybeRequestReview()
+        }
+    }
+
+    /**
+     * Консервативніший фільтр поверх власного ліміту Google: питаємо не на
+     * першому ж скануванні (дати призвичаїтись), не частіше ніж раз на місяць
+     * і не більше кількох разів за весь час життя застосунку.
+     */
+    private fun maybeRequestReview() {
+        val decision = decideReviewPrompt(
+            current = reviewPromptState,
+            now = System.currentTimeMillis(),
+            minScans = REVIEW_MIN_SCANS,
+            cooldownMs = REVIEW_COOLDOWN_MS,
+            maxPrompts = REVIEW_MAX_PROMPTS,
+        )
+        reviewPromptState = decision.nextState
+        if (decision.shouldRequestReview) _reviewRequests.trySend(Unit)
+
+        val toSave = reviewPromptState
+        viewModelScope.launch(Dispatchers.IO) { reviewStore.save(toSave) }
     }
 
     // -------------------------------------------------------------- повторні зчитування
@@ -267,13 +484,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     private fun string(resId: Int): String = getApplication<Application>().getString(resId)
 
-    private fun mergeNotes(existing: String, fresh: String): String = when {
-        fresh.isBlank() -> existing
-        existing.isBlank() -> fresh
-        existing.trim() == fresh.trim() -> existing
-        else -> existing.trimEnd() + "\n\n" + fresh.trim()
-    }
-
     fun dismissError() {
         _state.value = _state.value.copy(error = null)
     }
@@ -311,6 +521,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
      * перезаписувати весь JSON на кожну літеру немає сенсу.
      */
     private fun persist(history: List<Reading>) {
+        // Демо живе лише в пам'яті й файлу історії не торкається.
+        if (_state.value.demo) return
         persistJob?.cancel()
         persistJob = viewModelScope.launch(Dispatchers.IO) {
             delay(PERSIST_DELAY_MS)
@@ -321,10 +533,64 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     override fun onCleared() {
         super.onCleared()
         // viewModelScope тут уже скасовано, тож дописуємо останні правки напряму.
-        store.save(_state.value.history)
+        // Під час демо в стані лежать вигадані записи — зберігаємо справжні.
+        store.save(stashedHistory ?: _state.value.history)
     }
 
     private companion object {
         const val PERSIST_DELAY_MS = 400L
+
+        /** Скільки триває «опитування» в демо — приблизно як справжнє. */
+        const val DEMO_POLL_MS = 1_500L
+
+        /** Не питаємо на першому скануванні — хай користувач спершу звикне. */
+        const val REVIEW_MIN_SCANS = 2
+
+        /** Не частіше ніж раз на місяць, навіть якщо Google і показав би. */
+        const val REVIEW_COOLDOWN_MS = 30L * 24 * 60 * 60 * 1000
+
+        /** Скільки разів за весь час життя застосунку взагалі просити. */
+        const val REVIEW_MAX_PROMPTS = 3
     }
+}
+
+/**
+ * Влиття нотатки при об'єднанні дублікатів. Винесено з класу — чиста функція,
+ * тож перевіряється звичайним юніт-тестом без Android-контексту.
+ */
+internal fun mergeNotes(existing: String, fresh: String): String = when {
+    fresh.isBlank() -> existing
+    existing.isBlank() -> fresh
+    existing.trim() == fresh.trim() -> existing
+    else -> existing.trimEnd() + "\n\n" + fresh.trim()
+}
+
+/** Результат перевірки: чи варто зараз показати системний діалог оцінки. */
+internal data class ReviewDecision(val nextState: ReviewPromptState, val shouldRequestReview: Boolean)
+
+/**
+ * Чиста версія рішення «питати відгук чи ні» — винесена з [MainViewModel], щоб
+ * усі межові випадки (перше сканування, кулдаун, ліміт кількості) перевірялись
+ * юніт-тестом, а не лише вручну на пристрої.
+ */
+internal fun decideReviewPrompt(
+    current: ReviewPromptState,
+    now: Long,
+    minScans: Int,
+    cooldownMs: Long,
+    maxPrompts: Int,
+): ReviewDecision {
+    val incremented = current.copy(completedScans = current.completedScans + 1)
+    val cooldownPassed = incremented.lastPromptAtMillis == 0L ||
+        now - incremented.lastPromptAtMillis >= cooldownMs
+    val shouldAsk = incremented.completedScans >= minScans &&
+        incremented.promptCount < maxPrompts &&
+        cooldownPassed
+
+    val next = if (shouldAsk) {
+        incremented.copy(lastPromptAtMillis = now, promptCount = incremented.promptCount + 1)
+    } else {
+        incremented
+    }
+    return ReviewDecision(next, shouldAsk)
 }

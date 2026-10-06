@@ -111,6 +111,12 @@ class QrScanActivity : ComponentActivity() {
 
     private val delivered = AtomicBoolean(false)
 
+    /**
+     * Код для кнопки «Демо-код». Є лише в демо-режимі — і тоді сканер не
+     * закривається навіть без камери чи дозволу на неї.
+     */
+    private var demoValue: String? = null
+
     /** Код знайдено, чекаємо підтвердження — нові кадри не аналізуємо. */
     private val paused = AtomicBoolean(false)
     private var pendingValue: String? = null
@@ -162,7 +168,7 @@ class QrScanActivity : ComponentActivity() {
             } else {
                 Toast.makeText(this, getString(R.string.camera_permission_needed), Toast.LENGTH_LONG)
                     .show()
-                finish()
+                if (demoValue == null) finish()
             }
         }
 
@@ -173,6 +179,7 @@ class QrScanActivity : ComponentActivity() {
 
         val title = intent.getStringExtra(EXTRA_TITLE).orEmpty()
         val progress = intent.getStringExtra(EXTRA_PROGRESS).orEmpty()
+        demoValue = intent.getStringExtra(EXTRA_DEMO_VALUE)
 
         previewView = PreviewView(this).apply {
             // Оператор крутить коробку в руках — екран не має гаснути.
@@ -286,6 +293,18 @@ class QrScanActivity : ComponentActivity() {
                     torchButton,
                     LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
                 )
+                demoValue?.let { value ->
+                    addView(
+                        Button(this@QrScanActivity).apply {
+                            text = getString(R.string.scan_demo_code)
+                            setTextColor(ACCENT)
+                            setBackgroundColor(Color.TRANSPARENT)
+                            // Той самий шлях, що й справжня знахідка: звірка, сигнал, вібрація.
+                            setOnClickListener { proposeResult(value, Barcode.FORMAT_QR_CODE) }
+                        },
+                        LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+                    )
+                }
                 addView(
                     Button(this@QrScanActivity).apply {
                         text = getString(R.string.action_skip)
@@ -626,7 +645,7 @@ class QrScanActivity : ComponentActivity() {
                     getString(R.string.camera_unavailable, e.message.orEmpty()),
                     Toast.LENGTH_LONG,
                 ).show()
-                finish()
+                if (demoValue == null) finish()
             }
         }, ContextCompat.getMainExecutor(this))
     }
@@ -896,6 +915,7 @@ class QrScanActivity : ComponentActivity() {
         const val EXTRA_RESULT = "scan_result"
         private const val EXTRA_TITLE = "scan_title"
         private const val EXTRA_PROGRESS = "scan_progress"
+        private const val EXTRA_DEMO_VALUE = "scan_demo_value"
         private const val PAD = 44
         private const val TAG = "QrScan"
 
@@ -926,9 +946,16 @@ class QrScanActivity : ComponentActivity() {
         private const val INK_TEXT = 0xFFF3F6FB.toInt()
         private const val MUTED = 0xFF8A93A6.toInt()
 
-        fun intent(context: Context, title: String, progress: String): Intent =
+        /** @param demoValue код для кнопки «Демо-код»; null — звичайний сканер без неї. */
+        fun intent(
+            context: Context,
+            title: String,
+            progress: String,
+            demoValue: String? = null,
+        ): Intent =
             Intent(context, QrScanActivity::class.java)
                 .putExtra(EXTRA_TITLE, title)
                 .putExtra(EXTRA_PROGRESS, progress)
+                .putExtra(EXTRA_DEMO_VALUE, demoValue)
     }
 }

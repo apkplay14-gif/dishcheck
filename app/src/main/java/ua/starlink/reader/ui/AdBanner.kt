@@ -1,6 +1,6 @@
 package ua.starlink.reader.ui
 
-import android.app.Activity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -91,7 +91,7 @@ private const val MAX_BANNER_HEIGHT_DP = 60
 fun PrivacyOptionsEntry() {
     if (!BuildConfig.SHOW_ADS) return
     if (!AdsConsent.privacyOptionsRequired) return
-    val activity = LocalContext.current as? Activity ?: return
+    val activity = LocalActivity.current ?: return
 
     TextButton(onClick = { AdsConsent.showPrivacyOptions(activity) }) {
         Text(

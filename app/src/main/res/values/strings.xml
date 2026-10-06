@@ -50,6 +50,22 @@
     <string name="action_send_log">Send log</string>
     <string name="privacy_options">Privacy settings</string>
 
+    <!-- Тест швидкості інтернету -->
+    <string name="speed_test_title">Speed test</string>
+    <string name="speed_test_ping_label">Ping</string>
+    <string name="speed_test_download_label">Download</string>
+    <string name="speed_test_upload_label">Upload</string>
+    <string name="speed_test_ms_value">%1$d ms</string>
+    <string name="speed_test_mbps_value">%1$.1f Mbps</string>
+    <string name="speed_test_start">Start test</string>
+    <string name="speed_test_retry">Test again</string>
+    <string name="speed_test_running_ping">Measuring ping…</string>
+    <string name="speed_test_running_download">Measuring download…</string>
+    <string name="speed_test_running_upload">Measuring upload…</string>
+    <string name="speed_test_hint">Measures the speed of the current Wi-Fi connection (the dish\'s internet), not the link between the phone and the dish.</string>
+    <string name="speed_test_error_no_wifi">No Wi-Fi connection. Connect to the Starlink network and try again.</string>
+    <string name="speed_test_error_generic">Could not measure the speed. Check the connection and try again.</string>
+
     <!-- Картка комплекту -->
     <string name="section_kit">Kit</string>
     <string name="section_network">From the network</string>
@@ -126,6 +142,18 @@
     <string name="share_kit" translatable="false">KIT</string>
     <string name="share_note">Note:</string>
     <string name="share_chooser">Share via</string>
+
+    <!-- Демо-режим: для тих, у кого немає Starlink поруч, зокрема рецензента Google -->
+    <string name="demo_invite">No Starlink nearby?</string>
+    <string name="demo_start">Try the demo</string>
+    <string name="demo_title">Demo mode</string>
+    <string name="demo_pill">DEMO</string>
+    <string name="demo_hint">Sample data, no Starlink needed. In the scanner, tap “Demo code”. Nothing is saved, and your real history stays untouched.</string>
+    <string name="demo_exit">Exit demo</string>
+    <string name="scan_demo_code">Demo code</string>
+    <string name="demo_share_mark">[DEMO] Sample from the “%1$s” demo mode — the data is made up.</string>
+    <string name="demo_note_1">Warehouse No. 2, roof mount</string>
+    <string name="demo_note_2">Shop on Central St., dish on the balcony</string>
 
     <plurals name="records">
         <item quantity="one">%d record</item>

@@ -15,6 +15,18 @@ enum class QrStep(val order: Int, @StringRes val titleRes: Int) {
 enum class EditableField { KIT, DISH_SERIAL, MODEM_SERIAL, MODEM_MAC, NOTE }
 
 /**
+ * Лічильники для запиту відгуку в Play Маркеті через In-App Review API.
+ * Самé рішення, чи показати картку, лишається за Google (є власний ліміт
+ * частоти) — це лише наш додатковий, консервативніший фільтр зверху.
+ */
+@Serializable
+data class ReviewPromptState(
+    val completedScans: Int = 0,
+    val lastPromptAtMillis: Long = 0L,
+    val promptCount: Int = 0,
+)
+
+/**
  * Що саме знімати з комплекту. Порядок полів = порядок зчитування на екрані.
  */
 @Serializable

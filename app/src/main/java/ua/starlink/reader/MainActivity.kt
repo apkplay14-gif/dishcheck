@@ -13,6 +13,9 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.lifecycle.lifecycleScope
+import com.google.android.play.core.review.ReviewManagerFactory
+import kotlinx.coroutines.launch
 import ua.starlink.reader.ads.AdsConsent
 import ua.starlink.reader.data.QrStep
 import ua.starlink.reader.qr.QrScanActivity
@@ -71,6 +74,10 @@ class MainActivity : ComponentActivity() {
         // Google раніше, ніж користувач щось вирішив.
         AdsConsent.gather(this)
 
+        lifecycleScope.launch {
+            viewModel.reviewRequests.collect { requestReview() }
+        }
+
         setContent {
             StarlinkReaderTheme {
                 val state by viewModel.state.collectAsState()
@@ -83,6 +90,21 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.refreshLink()
+    }
+
+    /**
+     * Офіційний In-App Review API: показує рідну картку оцінки Google Play
+     * без виходу із застосунку. Google сам вирішує, чи показати її саме
+     * зараз (діє власний ліміт частоти) — колбека про фактичний показ нема,
+     * тож помилки тут просто ігноруються як некритичні.
+     */
+    private fun requestReview() {
+        val manager = ReviewManagerFactory.create(this)
+        manager.requestReviewFlow().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                manager.launchReviewFlow(this, task.result)
+            }
+        }
     }
 
     // ------------------------------------------------------------------ ланцюжок кроків
@@ -150,6 +172,7 @@ class MainActivity : ComponentActivity() {
                     } else {
                         ""
                     },
+                    demoValue = viewModel.demoScanValue(uid, step),
                 )
             )
             return
@@ -169,7 +192,20 @@ class MainActivity : ComponentActivity() {
         totalSteps = 1
         doneSteps = 1
         currentStep = step
-        qrLauncher.launch(QrScanActivity.intent(this, getString(step.titleRes), ""))
+        qrLauncher.launch(
+            QrScanActivity.intent(
+                context = this,
+                title = getString(step.titleRes),
+                progress = "",
+                demoValue = viewModel.demoScanValue(uid, step),
+            )
+        )
+    }
+
+    /** У демо кожне надсилання починається з позначки, що дані вигадані. */
+    private fun share(text: String) {
+        val marked = if (viewModel.state.value.demo) Sharing.markDemo(this, text) else text
+        Sharing.share(this, marked)
     }
 
     private fun buildActions() = AppActions(
@@ -186,9 +222,12 @@ class MainActivity : ComponentActivity() {
         onDeleteMany = viewModel::deleteAll,
         onMergeDuplicate = viewModel::mergeDuplicate,
         onKeepDuplicate = viewModel::keepDuplicateAsNew,
-        onShare = { text -> Sharing.share(this, text) },
+        onShare = ::share,
         onAllowRawProbe = viewModel::setAllowRawProbe,
         onDismissError = viewModel::dismissError,
+        onRunSpeedTest = viewModel::runSpeedTest,
+        onStartDemo = viewModel::startDemo,
+        onExitDemo = viewModel::exitDemo,
     )
 
     private companion object {

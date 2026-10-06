@@ -148,9 +148,16 @@ gradlew.bat bundleRelease
 Рецензент Google не має тарілки Starlink. Він відкриє застосунок, побачить
 «Підключіться до Wi-Fi Starlink» — і далі нічого. Це типова причина відмови.
 
-У розділі **App access** треба або описати текстом, що мережеві функції
-потребують обладнання, або (надійніше) додати **демо-режим** зі зразковими даними.
-Демо-режим я можу зробити — скажіть, якщо дійде до цього.
+Для цього в застосунку є **демо-режим** (кнопка «Спробувати демо» на картці
+підключення). У розділі **App access** додайте рецензенту інструкцію — англійською,
+бо читає її він:
+
+> The app reads identifiers from Starlink satellite internet equipment over the
+> local Wi-Fi network, so it needs a Starlink kit nearby. To review it without
+> one, tap "Try the demo" in the connection card on the home screen. Demo mode
+> uses sample data: tap "Start capture", tap "Demo code" on each scanner step
+> and confirm, then use "Share" to see the message that gets sent. No login or
+> account is required.
 
 **Крок 7. Публікація**
 Спочатку **internal testing** (до 100 осіб, без затримок), потім closed testing
@@ -171,7 +178,7 @@ gradlew.bat bundleRelease
 - [ ] Скорочення розміру: зараз 42 МБ, з них ~25 МБ — нативні бібліотеки ML Kit
       під чотири архітектури. AAB роздає під кожен телефон лише потрібну, тож
       з Play користувач качатиме близько 20 МБ. Окремо нічого робити не треба
-- [ ] Демо-режим для рецензента (якщо вирішите, що потрібен)
+- [x] Демо-режим для рецензента — кнопка «Спробувати демо» на картці підключення
 
 ---
 

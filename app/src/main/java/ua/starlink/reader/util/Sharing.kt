@@ -123,6 +123,14 @@ object Sharing {
         appendLine("$label: ${value.ifBlank { "—" }}")
     }
 
+    /**
+     * Позначка зверху для всього, що надсилається з демо-режиму: переслане
+     * далі повідомлення з вигаданими номерами не має виглядати як справжнє.
+     */
+    fun markDemo(context: Context, text: String): String =
+        context.getString(R.string.demo_share_mark, context.getString(R.string.app_name)) +
+            "\n\n" + text
+
     fun share(context: Context, text: String) {
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"

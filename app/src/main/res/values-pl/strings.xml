@@ -2,8 +2,8 @@
 <resources>
     <string name="menu_kit">Numer KIT z pudełka</string>
     <string name="menu_dish_serial">Nr seryjny anteny</string>
-    <string name="menu_modem_serial">Nr seryjny modemu</string>
-    <string name="menu_mac">Adres MAC modemu</string>
+    <string name="menu_modem_serial">Nr seryjny routera</string>
+    <string name="menu_mac">Adres MAC routera</string>
     <string name="hint_qr">QR / kod kreskowy</string>
     <string name="hint_from_dish">przez sieć z anteny</string>
     <string name="hint_from_router">przez sieć z routera</string>
@@ -75,7 +75,7 @@
 
     <string name="step_kit">Numer KIT z pudełka</string>
     <string name="step_dish_serial">Numer seryjny anteny</string>
-    <string name="step_modem_serial">Numer seryjny modemu</string>
+    <string name="step_modem_serial">Numer seryjny routera</string>
     <string name="step_progress">Krok %1$d z %2$d</string>
 
     <string name="camera_permission_needed">Wymagane uprawnienie do aparatu</string>

@@ -1,9 +1,9 @@
 "menu_kit" = "Номер KIT з коробки";
 "menu_dish_serial" = "Серійний № тарілки";
-"menu_modem_serial" = "Серійний № модема";
+"menu_modem_serial" = "Серійний № роутера";
 "menu_starlink_id" = "Starlink ID";
 "menu_router_id" = "Router ID";
-"menu_mac" = "MAC-адреса модема";
+"menu_mac" = "MAC-адреса роутера";
 "hint_qr" = "QR / штрихкод";
 "hint_from_dish" = "по мережі з тарілки";
 "hint_from_router" = "по мережі з роутера";
@@ -75,7 +75,7 @@
 
 "step_kit" = "Номер KIT з коробки";
 "step_dish_serial" = "Серійний номер тарілки";
-"step_modem_serial" = "Серійний номер модема";
+"step_modem_serial" = "Серійний номер роутера";
 "step_progress" = "Крок %d з %d";
 
 "camera_permission_needed" = "Потрібен дозвіл на камеру";

@@ -1,10 +1,10 @@
 /* Пункти меню «що зчитувати» */
 "menu_kit" = "KIT number from the box";
 "menu_dish_serial" = "Dish serial no.";
-"menu_modem_serial" = "Modem serial no.";
+"menu_modem_serial" = "Router serial no.";
 "menu_starlink_id" = "Starlink ID";
 "menu_router_id" = "Router ID";
-"menu_mac" = "Modem MAC address";
+"menu_mac" = "Router MAC address";
 "hint_qr" = "QR / barcode";
 "hint_from_dish" = "over the network from the dish";
 "hint_from_router" = "over the network from the router";
@@ -84,7 +84,7 @@
 /* Кроки сканування */
 "step_kit" = "KIT number from the box";
 "step_dish_serial" = "Dish serial number";
-"step_modem_serial" = "Modem serial number";
+"step_modem_serial" = "Router serial number";
 "step_progress" = "Step %d of %d";
 
 /* Сканер */

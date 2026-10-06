@@ -9,10 +9,10 @@
     <!-- Пункти меню «що зчитувати» -->
     <string name="menu_kit">KIT number from the box</string>
     <string name="menu_dish_serial">Dish serial no.</string>
-    <string name="menu_modem_serial">Modem serial no.</string>
+    <string name="menu_modem_serial">Router serial no.</string>
     <string name="menu_starlink_id" translatable="false">Starlink ID</string>
     <string name="menu_router_id" translatable="false">Router ID</string>
-    <string name="menu_mac">Modem MAC address</string>
+    <string name="menu_mac">Router MAC address</string>
     <string name="hint_qr">QR / barcode</string>
     <string name="hint_from_dish">over the network from the dish</string>
     <string name="hint_from_router">over the network from the router</string>
@@ -93,7 +93,7 @@
     <!-- Кроки сканування -->
     <string name="step_kit">KIT number from the box</string>
     <string name="step_dish_serial">Dish serial number</string>
-    <string name="step_modem_serial">Modem serial number</string>
+    <string name="step_modem_serial">Router serial number</string>
     <string name="step_progress">Step %1$d of %2$d</string>
 
     <!-- Сканер -->

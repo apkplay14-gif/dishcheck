@@ -2,8 +2,8 @@
 <resources>
     <string name="menu_kit">Номер KIT з коробки</string>
     <string name="menu_dish_serial">Серійний № тарілки</string>
-    <string name="menu_modem_serial">Серійний № модема</string>
-    <string name="menu_mac">MAC-адреса модема</string>
+    <string name="menu_modem_serial">Серійний № роутера</string>
+    <string name="menu_mac">MAC-адреса роутера</string>
     <string name="hint_qr">QR / штрихкод</string>
     <string name="hint_from_dish">по мережі з тарілки</string>
     <string name="hint_from_router">по мережі з роутера</string>
@@ -75,7 +75,7 @@
 
     <string name="step_kit">Номер KIT з коробки</string>
     <string name="step_dish_serial">Серійний номер тарілки</string>
-    <string name="step_modem_serial">Серійний номер модема</string>
+    <string name="step_modem_serial">Серійний номер роутера</string>
     <string name="step_progress">Крок %1$d з %2$d</string>
 
     <string name="camera_permission_needed">Потрібен дозвіл на камеру</string>

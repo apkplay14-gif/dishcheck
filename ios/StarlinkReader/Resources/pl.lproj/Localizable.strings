@@ -1,9 +1,9 @@
 "menu_kit" = "Numer KIT z pudełka";
 "menu_dish_serial" = "Nr seryjny anteny";
-"menu_modem_serial" = "Nr seryjny modemu";
+"menu_modem_serial" = "Nr seryjny routera";
 "menu_starlink_id" = "Starlink ID";
 "menu_router_id" = "Router ID";
-"menu_mac" = "Adres MAC modemu";
+"menu_mac" = "Adres MAC routera";
 "hint_qr" = "QR / kod kreskowy";
 "hint_from_dish" = "przez sieć z anteny";
 "hint_from_router" = "przez sieć z routera";
@@ -75,7 +75,7 @@
 
 "step_kit" = "Numer KIT z pudełka";
 "step_dish_serial" = "Numer seryjny anteny";
-"step_modem_serial" = "Numer seryjny modemu";
+"step_modem_serial" = "Numer seryjny routera";
 "step_progress" = "Krok %d z %d";
 
 "camera_permission_needed" = "Wymagane uprawnienie do aparatu";

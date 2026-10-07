@@ -23,8 +23,8 @@ android {
         applicationId = "com.dishcheck.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 20
-        versionName = "1.3"
+        versionCode = 21
+        versionName = "1.4"
 
         // ------------------------------------------------------------------ реклама
         // Тут — тестові ідентифікатори Google: така збірка показує лише позначену
@@ -85,6 +85,7 @@ android {
                 debugSymbolLevel = "SYMBOL_TABLE"
             }
         }
+
     }
 
     compileOptions {

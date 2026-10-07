@@ -74,6 +74,7 @@
     <string name="action_select_all">Seleccionar todo</string>
     <string name="action_deselect_all">Anular selección</string>
     <string name="action_share_count">Compartir (%1$d)</string>
+    <string name="action_share_kits">Compartir solo los números KIT (%1$d)</string>
     <string name="history_empty_title">Todavía no hay nada</string>
     <string name="history_empty_hint">Captura tu primer kit en la pantalla principal.</string>
     <string name="day_select">todo el día</string>

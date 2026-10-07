@@ -90,6 +90,20 @@ object Sharing {
         }.trimEnd()
     }
 
+    /**
+     * Лише KIT-номери обраних комплектів, від новішого до старішого — для
+     * переліку координатору чи вставки в таблицю. Записи без KIT пропускаються,
+     * а комплект, який зчитували двічі, потрапляє в перелік один раз.
+     */
+    fun kitNumbers(readings: List<Reading>): List<String> =
+        readings.sortedByDescending { it.timestamp }
+            .map { it.kitNumber.trim() }
+            .filter { it.isNotEmpty() }
+            .distinct()
+
+    /** Текст для месенджера: KIT-номери по одному в рядку, без заголовка. */
+    fun buildKitList(readings: List<Reading>): String = kitNumbers(readings).joinToString("\n")
+
     /** Тіло одного запису: тільки поля, без заголовка й дати. */
     private fun StringBuilder.appendReading(context: Context, reading: Reading) {
         val settings = reading.settings

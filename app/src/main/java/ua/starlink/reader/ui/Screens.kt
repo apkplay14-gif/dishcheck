@@ -939,32 +939,52 @@ private fun HistoryScreen(
         },
         bottomBar = {
             if (picking && chosen.isNotEmpty()) {
-                Row(
+                val kits = Sharing.kitNumbers(chosen)
+                Column(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    Button(
-                        onClick = { actions.onShare(Sharing.buildText(context, chosen)) },
-                        modifier = Modifier.weight(1f).height(52.dp),
-                        shape = MaterialTheme.shapes.medium,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Brand.Accent,
-                            contentColor = Color(0xFF04070E),
-                        ),
-                    ) {
-                        RowIcon(R.drawable.ic_share, Color(0xFF04070E), size = 18)
-                        Spacer(Modifier.width(8.dp))
-                        Text(stringResource(R.string.action_share_count, chosen.size))
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Button(
+                            onClick = { actions.onShare(Sharing.buildText(context, chosen)) },
+                            modifier = Modifier.weight(1f).height(52.dp),
+                            shape = MaterialTheme.shapes.medium,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Brand.Accent,
+                                contentColor = Color(0xFF04070E),
+                            ),
+                        ) {
+                            RowIcon(R.drawable.ic_share, Color(0xFF04070E), size = 18)
+                            Spacer(Modifier.width(8.dp))
+                            Text(stringResource(R.string.action_share_count, chosen.size))
+                        }
+                        OutlinedButton(
+                            onClick = { confirmDelete = true },
+                            modifier = Modifier.height(52.dp),
+                            shape = MaterialTheme.shapes.medium,
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = Brand.Alert
+                            ),
+                        ) {
+                            RowIcon(R.drawable.ic_delete, Brand.Alert, size = 18)
+                        }
                     }
+
+                    // Часто потрібен лише перелік KIT — переслати координатору чи
+                    // вставити в таблицю — без серійників, ID і приміток.
                     OutlinedButton(
-                        onClick = { confirmDelete = true },
-                        modifier = Modifier.height(52.dp),
+                        onClick = { actions.onShare(Sharing.buildKitList(chosen)) },
+                        enabled = kits.isNotEmpty(),
+                        modifier = Modifier.fillMaxWidth().height(52.dp),
                         shape = MaterialTheme.shapes.medium,
-                        colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = Brand.Alert
-                        ),
                     ) {
-                        RowIcon(R.drawable.ic_delete, Brand.Alert, size = 18)
+                        RowIcon(
+                            R.drawable.ic_box,
+                            if (kits.isNotEmpty()) Brand.Accent else Brand.TextMuted,
+                            size = 18,
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.action_share_kits, kits.size))
                     }
                 }
             }

@@ -74,6 +74,7 @@
     <string name="action_select_all">Обрати всі</string>
     <string name="action_deselect_all">Зняти всі</string>
     <string name="action_share_count">Поділитися (%1$d)</string>
+    <string name="action_share_kits">Надіслати лише KIT-номери (%1$d)</string>
     <string name="history_empty_title">Поки що порожньо</string>
     <string name="history_empty_hint">Зчитайте перший комплект на головному екрані.</string>
     <string name="day_select">весь день</string>

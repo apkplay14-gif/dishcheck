@@ -1,0 +1,48 @@
+=== TITLE (max 30 characters) ===
+Є Starlink: Kit, Serial & ID
+
+=== SHORT DESCRIPTION (max 80 characters) ===
+Find Starlink kit number, serials, Starlink ID and router MAC — and share them
+
+=== FULL DESCRIPTION (max 4000 characters) ===
+Є Starlink is a fast way to record Starlink kit data right at the installation site. Point the camera at the box or label, and the kit number and the dish and router serial numbers are captured. The Starlink ID, Router ID and router MAC address are read automatically over your Starlink Wi-Fi. No sign-up, no account.
+
+No more figuring out where to find the kit number or the Starlink ID, and no more copying long serial numbers by hand — the app reads them for you.
+
+WHAT IT CAPTURES
+• Kit number from the box — QR code or barcode
+• Dish serial number — QR code or barcode
+• Router serial number — QR code or barcode
+• Starlink ID (ut…) — over the network from the dish
+• Router ID — over the network from the router
+• Router MAC address — over the network
+Pick only the items you need; the app remembers your choice.
+
+HOW IT WORKS
+1. Connect to the Starlink Wi-Fi.
+2. Tap “Start capture” and scan the codes one by one — the scanner tells you what to look for.
+3. The app polls the dish and router and fills in the rest.
+Every value can be checked, edited by hand or scanned again.
+
+SHARE AND KEEP RECORDS
+• Send the kit data to Telegram, WhatsApp, Signal, Viber, SMS or email in one tap
+• History of all captures, grouped by day
+• Select several kits and send them in one message
+• Or send just the list of kit numbers, one per line — handy for reports and spreadsheets
+• Your own notes for each kit: address, customer, equipment condition
+• If the same terminal was read before, the app notices and offers to update the record
+
+ALSO
+• Reads QR, Data Matrix and barcodes, with a torch and zoom for small labels
+• Scanning works offline
+• Internet speed test over your Starlink
+• Demo mode: see how everything works even without a Starlink nearby
+• Languages: English, Ukrainian, Polish, Spanish, German
+
+WHO IT IS FOR
+Starlink installers and field technicians, volunteers and charities handing over terminals, IT teams at companies and communities — anyone who keeps an inventory of Starlink equipment.
+
+PRIVACY
+Everything you capture stays on your phone. The app has no servers of its own and does not send your numbers to the developer or anyone else. The source code is available for viewing on GitHub.
+
+Є Starlink is an independent app, not affiliated with or endorsed by SpaceX. Starlink is a trademark of Space Exploration Technologies Corp.

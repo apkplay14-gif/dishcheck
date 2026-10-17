@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -201,7 +202,9 @@ private fun HomeScreen(
                 // У демо реклами немає: його записують на відео для Play і показують
                 // рецензенту, а покази власної бойової реклами під час таких записів
                 // AdMob може зарахувати як накрутку.
-                if (!state.demo) AdBanner()
+                // Банер — над смугою жестів, а не під нею: інакше свайп «додому»
+                // ловить рекламу, а випадкові кліки AdMob карає.
+                if (!state.demo) AdBanner(Modifier.navigationBarsPadding())
             },
         ) { padding ->
             Column(
@@ -879,103 +882,78 @@ private fun HistoryScreen(
     Scaffold(
         containerColor = Brand.Ink,
         topBar = {
-            TopAppBar(
-                title = {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    ) {
-                        Text(
-                            if (picking) {
-                                stringResource(R.string.history_selected, chosen.size)
-                            } else {
-                                stringResource(R.string.history_title)
-                            }
-                        )
-                        if (state.demo) DemoPill()
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
-                navigationIcon = {
-                    TextButton(
-                        onClick = {
-                            if (picking) {
-                                picking = false
-                                selected = emptySet()
-                            } else {
-                                onBack()
-                            }
+            Column {
+                TopAppBar(
+                    title = {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        ) {
+                            Text(
+                                if (picking) {
+                                    stringResource(R.string.history_selected, chosen.size)
+                                } else {
+                                    stringResource(R.string.history_title)
+                                }
+                            )
+                            if (state.demo) DemoPill()
                         }
-                    ) {
-                        RowIcon(R.drawable.ic_back, Brand.TextPrimary, size = 20)
-                    }
-                },
-                actions = {
-                    if (picking) {
-                        val allSelected = chosen.size == state.history.size
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
+                    navigationIcon = {
                         TextButton(
                             onClick = {
-                                selected = if (allSelected) {
-                                    emptySet()
+                                if (picking) {
+                                    picking = false
+                                    selected = emptySet()
                                 } else {
-                                    state.history.map { it.uid }.toSet()
+                                    onBack()
                                 }
                             }
                         ) {
-                            Text(
-                                stringResource(
-                                    if (allSelected) R.string.action_deselect_all
-                                    else R.string.action_select_all
+                            RowIcon(R.drawable.ic_back, Brand.TextPrimary, size = 20)
+                        }
+                    },
+                    actions = {
+                        if (picking) {
+                            val allSelected = chosen.size == state.history.size
+                            TextButton(
+                                onClick = {
+                                    selected = if (allSelected) {
+                                        emptySet()
+                                    } else {
+                                        state.history.map { it.uid }.toSet()
+                                    }
+                                }
+                            ) {
+                                Text(
+                                    stringResource(
+                                        if (allSelected) R.string.action_deselect_all
+                                        else R.string.action_select_all
+                                    )
                                 )
-                            )
+                            }
+                        } else if (state.history.isNotEmpty()) {
+                            TextButton(onClick = { picking = true }) {
+                                Text(stringResource(R.string.action_select))
+                            }
                         }
-                    } else if (state.history.isNotEmpty()) {
-                        TextButton(onClick = { picking = true }) {
-                            Text(stringResource(R.string.action_select))
-                        }
-                    }
-                },
-            )
-        },
-        bottomBar = {
-            if (picking && chosen.isNotEmpty()) {
-                val kits = Sharing.kitNumbers(chosen)
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                ) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                        Button(
-                            onClick = { actions.onShare(Sharing.buildText(context, chosen)) },
-                            modifier = Modifier.weight(1f).height(52.dp),
-                            shape = MaterialTheme.shapes.medium,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Brand.Accent,
-                                contentColor = Color(0xFF04070E),
-                            ),
-                        ) {
-                            RowIcon(R.drawable.ic_share, Color(0xFF04070E), size = 18)
-                            Spacer(Modifier.width(8.dp))
-                            Text(stringResource(R.string.action_share_count, chosen.size))
-                        }
-                        OutlinedButton(
-                            onClick = { confirmDelete = true },
-                            modifier = Modifier.height(52.dp),
-                            shape = MaterialTheme.shapes.medium,
-                            colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = Brand.Alert
-                            ),
-                        ) {
-                            RowIcon(R.drawable.ic_delete, Brand.Alert, size = 18)
-                        }
-                    }
+                    },
+                )
 
-                    // Часто потрібен лише перелік KIT — переслати координатору чи
-                    // вставити в таблицю — без серійників, ID і приміток.
+                // Часто потрібен лише перелік KIT — переслати координатору чи
+                // вставити в таблицю — без серійників, ID і приміток. Кнопка
+                // нагорі, одразу під «Обрати всі»: так її видно після виділення,
+                // і вона далеко від смуги жестів унизу екрана.
+                if (picking && chosen.isNotEmpty()) {
+                    val kits = Sharing.kitNumbers(chosen)
                     OutlinedButton(
                         onClick = { actions.onShare(Sharing.buildKitList(chosen)) },
                         enabled = kits.isNotEmpty(),
-                        modifier = Modifier.fillMaxWidth().height(52.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .height(48.dp),
                         shape = MaterialTheme.shapes.medium,
                     ) {
                         RowIcon(
@@ -985,6 +963,41 @@ private fun HistoryScreen(
                         )
                         Spacer(Modifier.width(8.dp))
                         Text(stringResource(R.string.action_share_kits, kits.size))
+                    }
+                }
+            }
+        },
+        bottomBar = {
+            if (picking && chosen.isNotEmpty()) {
+                Row(
+                    // Застосунок малює під системними панелями, тож відступаємо від
+                    // смуги жестів / кнопок навігації — інакше кнопки опиняються там,
+                    // де свайп згортає застосунок.
+                    modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    Button(
+                        onClick = { actions.onShare(Sharing.buildText(context, chosen)) },
+                        modifier = Modifier.weight(1f).height(52.dp),
+                        shape = MaterialTheme.shapes.medium,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Brand.Accent,
+                            contentColor = Color(0xFF04070E),
+                        ),
+                    ) {
+                        RowIcon(R.drawable.ic_share, Color(0xFF04070E), size = 18)
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(R.string.action_share_count, chosen.size))
+                    }
+                    OutlinedButton(
+                        onClick = { confirmDelete = true },
+                        modifier = Modifier.height(52.dp),
+                        shape = MaterialTheme.shapes.medium,
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Brand.Alert
+                        ),
+                    ) {
+                        RowIcon(R.drawable.ic_delete, Brand.Alert, size = 18)
                     }
                 }
             }

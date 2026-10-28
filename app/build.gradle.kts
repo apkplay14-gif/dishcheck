@@ -93,6 +93,23 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    testOptions {
+        unitTests {
+            // Robolectric має бачити ресурси застосунку (рядки, іконки, тема).
+            isIncludeAndroidResources = true
+            all {
+                // Знімки для Play пишуться в play/screenshots лише на явний запит:
+                // gradlew testDebugUnitTest -Pscreenshots --tests '*StoreScreenshots*'
+                it.systemProperty("screenshots", project.hasProperty("screenshots"))
+                // Robolectric лізе у внутрішні класи JDK, які JBR 25 за замовчуванням закриває.
+                it.jvmArgs(
+                    "--add-exports=java.base/jdk.internal.access=ALL-UNNAMED",
+                    "--add-opens=java.base/java.io=ALL-UNNAMED",
+                )
+            }
+        }
+    }
+
     buildFeatures {
         compose = true
         buildConfig = true
@@ -140,4 +157,10 @@ dependencies {
     implementation(libs.play.review.ktx)
 
     testImplementation(libs.junit)
+    // Знімки екрана для сторінки в Play: справжній Compose-інтерфейс,
+    // відмальований Robolectric без пристрою (див. StoreScreenshots).
+    testImplementation(libs.robolectric)
+    testImplementation(platform(libs.compose.bom))
+    testImplementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.test.manifest)
 }

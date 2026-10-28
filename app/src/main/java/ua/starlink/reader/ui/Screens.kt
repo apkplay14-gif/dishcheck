@@ -119,8 +119,9 @@ private val MENU_MAC =
     MenuItem(6, R.drawable.ic_mac, R.string.menu_mac, R.string.hint_from_router)
 
 @Composable
-fun AppRoot(state: UiState, actions: AppActions) {
-    var screen by remember { mutableStateOf<Screen>(Screen.Home) }
+fun AppRoot(state: UiState, actions: AppActions, initialScreen: Screen = Screen.Home) {
+    // initialScreen — лише для знімків екрана в тестах; застосунок завжди стартує з головного.
+    var screen by remember { mutableStateOf(initialScreen) }
 
     when (val current = screen) {
         Screen.Home -> HomeScreen(

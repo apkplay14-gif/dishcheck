@@ -33,6 +33,17 @@
             </intent-filter>
         </activity>
 
+        <!-- Віддає файл експорту CSV у месенджер чи пошту. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.export"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/export_paths" />
+        </provider>
+
         <activity
             android:name=".qr.QrScanActivity"
             android:exported="false"

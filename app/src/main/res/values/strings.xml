@@ -156,6 +156,17 @@
     <string name="demo_note_1">Warehouse No. 2, roof mount</string>
     <string name="demo_note_2">Shop on Central St., dish on the balcony</string>
 
+    <!-- Складський режим, пошук, експорт CSV -->
+    <string name="action_export_csv" translatable="false">CSV</string>
+    <string name="warehouse_start">Warehouse mode — KIT only</string>
+    <string name="warehouse_progress">Added: %1$d</string>
+    <string name="warehouse_duplicate">This KIT is already in the history</string>
+    <string name="warehouse_done">Warehouse mode: %1$d kits added</string>
+    <string name="search_hint">Search: KIT, serial, ID, MAC, note</string>
+    <string name="search_nothing">Nothing found</string>
+    <string name="csv_date">Date</string>
+    <string name="csv_time">Time</string>
+
     <plurals name="records">
         <item quantity="one">%d record</item>
         <item quantity="other">%d records</item>

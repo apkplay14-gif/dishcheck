@@ -52,6 +52,7 @@ class StoreScreenshots {
         onRetryNetwork = {}, onDelete = {}, onDeleteMany = {}, onMergeDuplicate = {},
         onKeepDuplicate = {}, onShare = {}, onAllowRawProbe = {}, onDismissError = {},
         onRunSpeedTest = {}, onStartDemo = {}, onExitDemo = {},
+        onStartWarehouse = {}, onExportCsv = {},
     )
 
     /** П'ять комплектів: три сьогодні, два вчора — щоб історія мала що групувати. */

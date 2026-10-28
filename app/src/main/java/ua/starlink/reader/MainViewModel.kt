@@ -15,6 +15,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ua.starlink.reader.data.CaptureSettings
 import ua.starlink.reader.data.DemoData
+import ua.starlink.reader.data.duplicateKey
+import ua.starlink.reader.data.findDuplicate
 import ua.starlink.reader.data.EditableField
 import ua.starlink.reader.data.HistoryStore
 import ua.starlink.reader.data.QrStep
@@ -64,13 +66,17 @@ data class SpeedTestUiState(
     val error: String? = null,
 )
 
-/** Щойно зчитаний комплект збігся за Starlink ID з тим, що вже є в історії. */
+/** Щойно зчитаний комплект збігся з тим, що вже є в історії (за Starlink ID або KIT). */
 data class DuplicatePrompt(
     val freshUid: String,
     val existingUid: String,
-    val starlinkId: String,
+    /** Значення, за яким знайшли повтор, — показується в діалозі. */
+    val identifier: String,
     val existingTimestamp: Long,
 )
+
+/** Чим закінчилось сканування коробки в складському режимі. */
+enum class WarehouseResult { ADDED, ALREADY_IN_HISTORY, EMPTY }
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
 
@@ -247,6 +253,32 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         return DemoData.scanValue(step, seq)
     }
 
+    // ------------------------------------------------------------------ складський режим
+
+    /**
+     * Складський режим: з коробки береться лише KIT, без опитування тарілки й
+     * без діалогів, — щоб прийняти чи видати партію підряд. Повтор не
+     * додається: на складі той самий KIT двічі — це помилкове пересканування,
+     * а не новий комплект.
+     */
+    fun addWarehouseKit(raw: String): WarehouseResult {
+        val kit = raw.trim()
+        if (kit.isEmpty()) return WarehouseResult.EMPTY
+        val reading = Reading(
+            uid = UUID.randomUUID().toString(),
+            timestamp = System.currentTimeMillis(),
+            kitNumber = kit,
+            settings = WAREHOUSE_SETTINGS,
+        )
+        if (findDuplicate(reading, _state.value.history) != null) {
+            return WarehouseResult.ALREADY_IN_HISTORY
+        }
+        val history = listOf(reading) + _state.value.history
+        persist(history)
+        _state.value = _state.value.copy(history = history)
+        return WarehouseResult.ADDED
+    }
+
     // ------------------------------------------------------------------ зчитування
 
     /** Створює порожній запис і робить його поточним. Повертає його uid. */
@@ -415,25 +447,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     // -------------------------------------------------------------- повторні зчитування
 
-    /**
-     * Той самий комплект могли знімати раніше. Порівнюємо за Starlink ID —
-     * єдиним значенням, яке належить залізу й не залежить від того, чи
-     * відсканували коробку.
-     */
+    /** Той самий комплект могли знімати раніше — правила порівняння в [findDuplicate]. */
     private fun checkDuplicate(fresh: Reading) {
-        val starlinkId = fresh.starlinkId
-        if (starlinkId.isBlank()) return
-
-        val existing = _state.value.history
-            .filter { it.uid != fresh.uid && it.starlinkId == starlinkId }
-            .maxByOrNull { it.timestamp }
-            ?: return
-
+        val existing = findDuplicate(fresh, _state.value.history) ?: return
         _state.value = _state.value.copy(
             duplicate = DuplicatePrompt(
                 freshUid = fresh.uid,
                 existingUid = existing.uid,
-                starlinkId = starlinkId,
+                identifier = duplicateKey(fresh),
                 existingTimestamp = existing.timestamp,
             )
         )
@@ -539,6 +560,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     private companion object {
         const val PERSIST_DELAY_MS = 400L
+
+        /** Запис складського режиму показує й пересилає лише KIT. */
+        val WAREHOUSE_SETTINGS = CaptureSettings(
+            kitNumber = true, dishSerial = false, modemSerial = false,
+            starlinkId = false, routerId = false, modemMac = false,
+        )
 
         /** Скільки триває «опитування» в демо — приблизно як справжнє. */
         const val DEMO_POLL_MS = 1_500L

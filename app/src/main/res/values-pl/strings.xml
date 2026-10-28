@@ -132,6 +132,15 @@
     <string name="demo_note_1">Magazyn nr 2, montaż na dachu</string>
     <string name="demo_note_2">Sklep przy Centralnej, antena na balkonie</string>
 
+    <string name="warehouse_start">Tryb magazynowy – tylko KIT</string>
+    <string name="warehouse_progress">Dodano: %1$d</string>
+    <string name="warehouse_duplicate">Ten KIT jest już w historii</string>
+    <string name="warehouse_done">Tryb magazynowy: dodano zestawów – %1$d</string>
+    <string name="search_hint">Szukaj: KIT, nr seryjny, ID, MAC, notatka</string>
+    <string name="search_nothing">Nic nie znaleziono</string>
+    <string name="csv_date">Data</string>
+    <string name="csv_time">Godzina</string>
+
     <plurals name="records">
         <item quantity="one">%d wpis</item>
         <item quantity="few">%d wpisy</item>

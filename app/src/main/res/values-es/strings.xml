@@ -132,6 +132,15 @@
     <string name="demo_note_1">Almacén n.º 2, montaje en el tejado</string>
     <string name="demo_note_2">Tienda de la calle Central, antena en el balcón</string>
 
+    <string name="warehouse_start">Modo almacén: solo KIT</string>
+    <string name="warehouse_progress">Añadidos: %1$d</string>
+    <string name="warehouse_duplicate">Este KIT ya está en el historial</string>
+    <string name="warehouse_done">Modo almacén: %1$d kits añadidos</string>
+    <string name="search_hint">Buscar: KIT, n.º de serie, ID, MAC, nota</string>
+    <string name="search_nothing">No se encontró nada</string>
+    <string name="csv_date">Fecha</string>
+    <string name="csv_time">Hora</string>
+
     <plurals name="records">
         <item quantity="one">%d registro</item>
         <item quantity="other">%d registros</item>

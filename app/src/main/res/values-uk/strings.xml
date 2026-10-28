@@ -132,6 +132,15 @@
     <string name="demo_note_1">Склад №2, монтаж на даху</string>
     <string name="demo_note_2">Магазин на Центральній, тарілка на балконі</string>
 
+    <string name="warehouse_start">Складський режим — лише KIT</string>
+    <string name="warehouse_progress">Додано: %1$d</string>
+    <string name="warehouse_duplicate">Цей KIT уже є в історії</string>
+    <string name="warehouse_done">Складський режим: додано комплектів — %1$d</string>
+    <string name="search_hint">Пошук: KIT, серійник, ID, MAC, примітка</string>
+    <string name="search_nothing">Нічого не знайдено</string>
+    <string name="csv_date">Дата</string>
+    <string name="csv_time">Час</string>
+
     <plurals name="records">
         <item quantity="one">%d запис</item>
         <item quantity="few">%d записи</item>

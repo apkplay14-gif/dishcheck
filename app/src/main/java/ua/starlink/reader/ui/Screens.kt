@@ -66,6 +66,7 @@ import ua.starlink.reader.data.CaptureSettings
 import ua.starlink.reader.data.EditableField
 import ua.starlink.reader.data.QrStep
 import ua.starlink.reader.data.Reading
+import ua.starlink.reader.data.matches
 import ua.starlink.reader.net.LinkState
 import ua.starlink.reader.util.Sharing
 
@@ -95,6 +96,8 @@ class AppActions(
     val onRunSpeedTest: () -> Unit,
     val onStartDemo: () -> Unit,
     val onExitDemo: () -> Unit,
+    val onStartWarehouse: () -> Unit,
+    val onExportCsv: (readings: List<Reading>) -> Unit,
 )
 
 /** Одна позиція меню: номер, іконка, назва, підказка. */
@@ -220,6 +223,7 @@ private fun HomeScreen(
                 LinkStatusCard(state, actions)
                 CaptureMenuCard(state.settings, actions.onSettingsChange)
                 StartButton(state, actions)
+                WarehouseButton(enabled = !state.reading, onClick = actions.onStartWarehouse)
 
                 state.error?.let { message -> ErrorCard(message, actions.onDismissError) }
 
@@ -258,7 +262,7 @@ private fun DuplicateDialog(
         title = { Text(stringResource(R.string.duplicate_title)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Text(prompt.starlinkId, style = MonoValue, color = Brand.TextPrimary)
+                Text(prompt.identifier, style = MonoValue, color = Brand.TextPrimary)
                 Text(
                     stringResource(
                         R.string.duplicate_existing,
@@ -320,6 +324,24 @@ private fun StartButton(state: UiState, actions: AppActions) {
                 color = Brand.Alert,
             )
         }
+    }
+}
+
+/**
+ * Складський режим: лише KIT з коробок підряд, без опитування тарілки, —
+ * прийняти чи видати партію за кілька хвилин.
+ */
+@Composable
+private fun WarehouseButton(enabled: Boolean, onClick: () -> Unit) {
+    OutlinedButton(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = Modifier.fillMaxWidth().height(48.dp),
+        shape = MaterialTheme.shapes.medium,
+    ) {
+        RowIcon(R.drawable.ic_box, Brand.Accent, size = 18)
+        Spacer(Modifier.width(8.dp))
+        Text(stringResource(R.string.warehouse_start))
     }
 }
 
@@ -868,9 +890,12 @@ private fun HistoryScreen(
     var picking by rememberSaveable { mutableStateOf(false) }
     var confirmDelete by rememberSaveable { mutableStateOf(false) }
 
-    // Записи від новіших до старіших, розбиті по днях.
-    val groups = remember(state.history) {
-        state.history.sortedByDescending { it.timestamp }
+    var query by rememberSaveable { mutableStateOf("") }
+
+    // Записи, що підходять під пошук, — від новіших до старіших, розбиті по днях.
+    val visible = remember(state.history, query) { state.history.filter { it.matches(query) } }
+    val groups = remember(visible) {
+        visible.sortedByDescending { it.timestamp }
             .groupBy { Sharing.dayOf(it.timestamp) }
             .toList()
     }
@@ -917,13 +942,15 @@ private fun HistoryScreen(
                     },
                     actions = {
                         if (picking) {
-                            val allSelected = chosen.size == state.history.size
+                            // «Обрати всі» бере лише те, що зараз видно під пошуком.
+                            val visibleUids = visible.map { it.uid }.toSet()
+                            val allSelected = visibleUids.isNotEmpty() && selected.containsAll(visibleUids)
                             TextButton(
                                 onClick = {
                                     selected = if (allSelected) {
-                                        emptySet()
+                                        selected - visibleUids
                                     } else {
-                                        state.history.map { it.uid }.toSet()
+                                        selected + visibleUids
                                     }
                                 }
                             ) {
@@ -941,6 +968,10 @@ private fun HistoryScreen(
                         }
                     },
                 )
+
+                if (state.history.isNotEmpty()) {
+                    SearchField(query = query, onChange = { query = it })
+                }
 
                 // Часто потрібен лише перелік KIT — переслати координатору чи
                 // вставити в таблицю — без серійників, ID і приміток. Кнопка
@@ -990,6 +1021,14 @@ private fun HistoryScreen(
                         Spacer(Modifier.width(8.dp))
                         Text(stringResource(R.string.action_share_count, chosen.size))
                     }
+                    // Таблиця для Excel / Google Таблиць — усі поля, по рядку на комплект.
+                    OutlinedButton(
+                        onClick = { actions.onExportCsv(chosen) },
+                        modifier = Modifier.height(52.dp),
+                        shape = MaterialTheme.shapes.medium,
+                    ) {
+                        Text(stringResource(R.string.action_export_csv))
+                    }
                     OutlinedButton(
                         onClick = { confirmDelete = true },
                         modifier = Modifier.height(52.dp),
@@ -1021,6 +1060,16 @@ private fun HistoryScreen(
                     color = Brand.TextMuted,
                 )
             }
+            return@Scaffold
+        }
+
+        if (visible.isEmpty()) {
+            Text(
+                stringResource(R.string.search_nothing),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Brand.TextMuted,
+                modifier = Modifier.padding(padding).padding(24.dp),
+            )
             return@Scaffold
         }
 
@@ -1104,6 +1153,27 @@ private fun HistoryScreen(
             },
         )
     }
+}
+
+/** Пошук по KIT, серійниках, ID, MAC і примітках. */
+@Composable
+private fun SearchField(query: String, onChange: (String) -> Unit) {
+    OutlinedTextField(
+        value = query,
+        onValueChange = onChange,
+        singleLine = true,
+        placeholder = { Text(stringResource(R.string.search_hint), color = Brand.TextMuted) },
+        trailingIcon = if (query.isNotEmpty()) {
+            { TextButton(onClick = { onChange("") }) { Text("✕", color = Brand.TextMuted) } }
+        } else {
+            null
+        },
+        shape = MaterialTheme.shapes.small,
+        colors = fieldColors(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+    )
 }
 
 @Composable

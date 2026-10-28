@@ -3,6 +3,7 @@ package ua.starlink.reader
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.SystemBarStyle
@@ -22,6 +23,7 @@ import ua.starlink.reader.qr.QrScanActivity
 import ua.starlink.reader.ui.AppActions
 import ua.starlink.reader.ui.AppRoot
 import ua.starlink.reader.ui.StarlinkReaderTheme
+import ua.starlink.reader.util.CsvExport
 import ua.starlink.reader.util.Sharing
 
 class MainActivity : ComponentActivity() {
@@ -45,6 +47,10 @@ class MainActivity : ComponentActivity() {
     private var totalSteps = 0
     private var doneSteps = 0
 
+    /** Складський режим: сканер відкривається знову й знову, лише KIT. */
+    private lateinit var warehouseLauncher: ActivityResultLauncher<Intent>
+    private var warehouseAdded = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         restoreChain(savedInstanceState)
@@ -62,6 +68,27 @@ class MainActivity : ComponentActivity() {
             }
             // Пропуск або скасування не обриває ланцюжок — просто йдемо далі.
             advance()
+        }
+
+        warehouseLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            val raw = result.data?.getStringExtra(QrScanActivity.EXTRA_RESULT)
+            if (result.resultCode != RESULT_OK || raw == null) {
+                // «Пропустити» чи «Назад» — кінець партії.
+                Toast.makeText(
+                    this, getString(R.string.warehouse_done, warehouseAdded), Toast.LENGTH_LONG,
+                ).show()
+                return@registerForActivityResult
+            }
+            when (viewModel.addWarehouseKit(Sharing.normalizeScan(QrStep.KIT, raw))) {
+                WarehouseResult.ADDED -> warehouseAdded++
+                WarehouseResult.ALREADY_IN_HISTORY -> Toast.makeText(
+                    this, getString(R.string.warehouse_duplicate), Toast.LENGTH_SHORT,
+                ).show()
+                WarehouseResult.EMPTY -> Unit
+            }
+            launchWarehouseScan()
         }
 
         // Застосунок завжди темний, тож іконки системних панелей теж світлі.
@@ -121,6 +148,7 @@ class MainActivity : ComponentActivity() {
         outState.putBoolean(KEY_CHAIN, chainMode)
         outState.putInt(KEY_TOTAL, totalSteps)
         outState.putInt(KEY_DONE, doneSteps)
+        outState.putInt(KEY_WAREHOUSE, warehouseAdded)
     }
 
     private fun restoreChain(saved: Bundle?) {
@@ -136,6 +164,7 @@ class MainActivity : ComponentActivity() {
         chainMode = saved.getBoolean(KEY_CHAIN)
         totalSteps = saved.getInt(KEY_TOTAL)
         doneSteps = saved.getInt(KEY_DONE)
+        warehouseAdded = saved.getInt(KEY_WAREHOUSE)
     }
 
     private fun startCapture() {
@@ -202,6 +231,21 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    private fun startWarehouse() {
+        warehouseAdded = 0
+        launchWarehouseScan()
+    }
+
+    private fun launchWarehouseScan() {
+        warehouseLauncher.launch(
+            QrScanActivity.intent(
+                context = this,
+                title = getString(R.string.step_kit),
+                progress = getString(R.string.warehouse_progress, warehouseAdded),
+            )
+        )
+    }
+
     /** У демо кожне надсилання починається з позначки, що дані вигадані. */
     private fun share(text: String) {
         val marked = if (viewModel.state.value.demo) Sharing.markDemo(this, text) else text
@@ -228,6 +272,8 @@ class MainActivity : ComponentActivity() {
         onRunSpeedTest = viewModel::runSpeedTest,
         onStartDemo = viewModel::startDemo,
         onExitDemo = viewModel::exitDemo,
+        onStartWarehouse = ::startWarehouse,
+        onExportCsv = { readings -> CsvExport.share(this, readings) },
     )
 
     private companion object {
@@ -237,5 +283,6 @@ class MainActivity : ComponentActivity() {
         const val KEY_CHAIN = "capture_chain"
         const val KEY_TOTAL = "capture_total"
         const val KEY_DONE = "capture_done"
+        const val KEY_WAREHOUSE = "warehouse_added"
     }
 }

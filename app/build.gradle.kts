@@ -23,8 +23,8 @@ android {
         applicationId = "com.dishcheck.app"
         minSdk = 26
         targetSdk = 36
-        versionCode = 23
-        versionName = "1.5.1"
+        versionCode = 24
+        versionName = "1.6"
 
         // ------------------------------------------------------------------ реклама
         // Тут — тестові ідентифікатори Google: така збірка показує лише позначену
@@ -73,9 +73,11 @@ android {
                 logger.warn("keystore.properties has no admobAppId/admobBannerId: release will show Google TEST ads")
             }
 
-            // R8 вимкнено навмисно: protobuf-java будує повідомлення через рефлексію
-            // дескрипторів, і скорочення коду ламає динамічний розбір відповіді Starlink.
-            isMinifyEnabled = false
+            // R8 увімкнено, бо Google вимагає оптимізований DEX (інакше гірша видимість
+            // у Play). Але обережно: protobuf-java будує повідомлення через рефлексію
+            // дескрипторів, тож він і весь код застосунку лишаються як є
+            // (proguard-rules.pro) — стискаються й обфускуються лише сторонні бібліотеки.
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
             // Щоб Play Console сам умів розшифровувати аварійні завершення в

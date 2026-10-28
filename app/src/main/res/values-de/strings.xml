@@ -132,6 +132,15 @@
     <string name="demo_note_1">Lager Nr. 2, Dachmontage</string>
     <string name="demo_note_2">Laden in der Hauptstraße, Antenne auf dem Balkon</string>
 
+    <string name="warehouse_start">Lagermodus – nur KIT</string>
+    <string name="warehouse_progress">Hinzugefügt: %1$d</string>
+    <string name="warehouse_duplicate">Dieses KIT ist schon im Verlauf</string>
+    <string name="warehouse_done">Lagermodus: %1$d Kits hinzugefügt</string>
+    <string name="search_hint">Suche: KIT, Seriennr., ID, MAC, Notiz</string>
+    <string name="search_nothing">Nichts gefunden</string>
+    <string name="csv_date">Datum</string>
+    <string name="csv_time">Uhrzeit</string>
+
     <plurals name="records">
         <item quantity="one">%d Eintrag</item>
         <item quantity="other">%d Einträge</item>
